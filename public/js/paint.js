@@ -66,7 +66,6 @@ volume.addEventListener('change', function () {
 
 function bigLine(){
     gWidth = 100;
-    // con.drawImage(background,0,0,1600,790);
 }
 
 // 描画
@@ -117,6 +116,12 @@ function saveCanvas()
 	a.click();
 }
 
+function saveNow(){
+    var image = canvas.toDataURL('image/jpeg', 1);
+    var hash = window.location.hash.slice(1);
+    images[hash] = image;
+}
+
 function saveImages(){
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
         if (!options.crossDomain) {
@@ -128,7 +133,6 @@ function saveImages(){
     });
     
     $('#test_text').text('通信中...');
-    var image_1 = canvas.toDataURL('image_1/jpeg', 0.5);
 
     // Ajax通信を開始
     $.ajax({
@@ -136,16 +140,16 @@ function saveImages(){
       type: 'POST',
       data: {
           "title" : $('#title').val(),
-          "image_1" : image_1,
-          "image_2" : image_1,
-          "image_3" : image_1,
-          "image_4" : image_1,
-          "image_5" : image_1,
-          "image_6" : image_1,
-          "image_7" : image_1,
-          "image_8" : image_1,
-          "image_9" : image_1,
-          "image_10" : image_1,
+          "image_1" : images[1],
+          "image_2" : images[2],
+          "image_3" : images[3],
+          "image_4" : images[4],
+          "image_5" : images[5],
+          "image_6" : images[6],
+          "image_7" : images[7],
+          "image_8" : images[8],
+          "image_9" : images[9],
+          "image_10" : images[10],
         },
       dataType: 'json',
       timeout: 5000,
@@ -162,31 +166,30 @@ function saveImages(){
 
 function canvasPlus(){
     var newImageNumber = Object.keys(images).length+1;
-    console.log(newImageNumber);
-    $('#change_canvas_buttons').prepend('<input type="button" value="'+newImageNumber+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+    $('#change_canvas_buttons').append('<input type="button" value="'+newImageNumber+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
     var image = canvas.toDataURL('image/jpeg', 1);
     images[window.location.hash.slice(1)] = image;
     con.fillStyle = 'rgb(255,255,255)';
     con.fillRect(0, 0, 1600, 790);
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
+    if(newImageNumber == 10) {
+        $("#plus_button").remove();
+    }
 }
 
 function changeCanvas(id,hash){
     var image = canvas.toDataURL('image/jpeg', 1);
     images[hash] = image;
     if(images[id]){
-        console.log(images[id]);
         var img = new Image();
         img.src = images[id];
         img.onload = function(){
             con.drawImage(img, 0, 0, 1600, 790);
         }
     }else{
-        console.log("真っ白")
         con.fillStyle = 'rgb(255,255,255)';
         con.fillRect(0, 0, 1600, 790);
     }
-    console.log(images);
     window.location.hash = id;
 }

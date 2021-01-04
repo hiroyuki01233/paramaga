@@ -50,6 +50,7 @@ class ImageController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|max:100',
+            'image_1' => 'required',
         ]);
 
         $existFlag = 0;
@@ -70,15 +71,11 @@ class ImageController extends Controller
         $manga->published_flag = 0;
         $manga->url = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 30);
 
-        // $data = $request->input("image_1");
-        // $data = explode(',', $data);
-        // $image = base64_decode($data[1]);
-        // Storage::put('/private/test.jpeg', $image);
-
         if(!Storage::exists('private/image/'.Auth::user()->id)) Storage::makeDirectory('private/image/'.Auth::user()->id);
         if(!Storage::exists('private/image/'.Auth::user()->id."/".$number)) Storage::makeDirectory('private/image/'.Auth::user()->id."/".$number);
 
         for($i = 1; $i <= 10; $i++){
+            if(empty($request->input("image_".$i))) break;
 
             $data = $request->input("image_".$i);
             $data = explode(',', $data);
@@ -191,8 +188,6 @@ class ImageController extends Controller
             ->where('published_flag', 1)
             ->get()->toArray();
         $filePath = json_decode(json_encode($filePath), true);
-
-        // $data = file_get_contents("./".$filePath[0]["image_1"]);
 
         $base64data = base64_encode(Storage::get($filePath[0]["image_1"]));
 

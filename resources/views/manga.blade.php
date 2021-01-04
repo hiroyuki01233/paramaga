@@ -38,10 +38,8 @@
                 setCSTF();
 
                 const mangaAll = @json($mangaAll);
-                console.log(mangaAll);
 
                 $.each(mangaAll, function(index, value){
-                    console.log(index + ':' + value["title"]);
                     $.ajax({
                         url: 'http://localhost:8000/v1/image/thumbnailMe',
                         type: 'GET',
@@ -100,7 +98,6 @@
                 })
                 .done(function(data1,textStatus,jqXHR) {
                     var data2 = JSON.stringify(data1);
-                    console.log(data2);
                     window.location.href = '/manga';
                 })
                 .fail(function(data1,textStatus,jqXHR) {

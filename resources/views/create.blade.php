@@ -29,7 +29,7 @@
                 border: solid 5px #808080;
             } 
 
-            .change_canvas_buttons{
+            #change_canvas_buttons{
                 display: inline-block;
             }
         </style>
@@ -48,7 +48,7 @@
                     <input type="range" id="volume" value="0" min="0" max="150">
                     <input type="button" style="background-color: #808080" value="でかい" onclick="bigLine()">
 
-                    <a href="#modal">保存</a>
+                    <a href="#modal" onclick="saveNow()">保存</a>
                     <div class="remodal" data-remodal-id="modal">
                         <input type="text" id="title" name="title" required minlength="4" maxlength="100" size="50" placeholder="タイトルを入力">
                         <button data-remodal-action="close" class="remodal-close"></button>
@@ -57,12 +57,11 @@
                     </div>
                 </div>
                 <br>
-                <canvas id="canvas" width="1600" height="790" style="background-color:white;"></canvas> 
+                <canvas id="canvas" width="1600" height="790" style="background-color:white;"></canvas> <br>
                 <div id="change_canvas_buttons">
                     <input type="button" value="1" onclick="changeCanvas(this.value,window.location.hash.slice(1))">
-
-                    <input type="button" value="+" onclick="canvasPlus(window.location.hash.slice(1))">
                 </div>
+                <input id="plus_button" type="button" value="+" onclick="canvasPlus(window.location.hash.slice(1))">
             </main>
         </div>
         <script src="{{ asset('/js/paint.js') }}"></script>
