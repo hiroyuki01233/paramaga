@@ -19,6 +19,7 @@ class CreateMangaTable extends Migration
             $table->string('title', 100);
             $table->integer('published_flag');
             $table->integer('number_of_works');
+            $table->integer('number_of_paper');
             $table->string('url');
             $table->string('image_1');
             $table->string('image_2')->nullable();

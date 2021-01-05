@@ -23,7 +23,7 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
         <script>
 
-            function setCSTF(){
+            function setCSRF(){
                 $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
                     if (!options.crossDomain) {
                         const token = $('meta[name="csrf-token"]').attr('content');
@@ -33,44 +33,44 @@
                     }
                 });
             }
+            
+            var deleteId;
+            function changeDeleteId(id){
+                deleteId = id;
+            }
 
-            window.onload = function () {
-                setCSTF();
+
+            $(document).ready( function(){
+                setCSRF();
 
                 const mangaAll = @json($mangaAll);
-
-                $.each(mangaAll, function(index, value){
-                    $.ajax({
-                        url: 'http://localhost:8000/v1/image/thumbnailMe',
-                        type: 'GET',
-                        dataType: 'json',
-                        data: { 
-                            "number": value["number_of_works"],
-                        },
-                        timeout: 5000,
-                    })
-                    .done(function(data1,textStatus,jqXHR) {
-                        var data2 = JSON.stringify(data1);
-                        data2 = data2.slice(1);
-                        data2 = data2.slice(0, -1);
-                        document.getElementById("image_" + value["number_of_works"]).src = data2
-                    })
-                    .fail(function(data1,textStatus,jqXHR) {
-                        var data2 = JSON.stringify(data1);
-                        console.log(data2);
-                    });
-                })
-            };
-
-            function deleteManga(id){
                 
-                setCSTF();
+                $.ajax({
+                    url: 'http://localhost:8000/v1/image/myMangaThumbnaiAll',
+                    type: 'GET',
+                    dataType: 'json',
+                    timeout: 5000,
+                })
+                .done(function(result,textStatus,jqXHR) {
+                    $.each(mangaAll,function(index,value){
+                        document.getElementById("image_" + value["number_of_works"]).src = result[value["number_of_works"]];
+                    })
+                })
+                .fail(function(data1,textStatus,jqXHR) {
+                    var data2 = JSON.stringify(data1);
+                    console.log(data2);
+                });
+            });
+            
+
+            function deleteManga(){
+                setCSRF();
 
                 $('#test_text').text('通信中...');
 
                 // Ajax通信を開始
                 $.ajax({
-                url: 'http://localhost:8000/v1/image/'+id,
+                url: 'http://localhost:8000/v1/image/'+deleteId,
                 type: 'DELETE',
                 dataType: 'json',
                 timeout: 5000,
@@ -87,13 +87,16 @@
             };
 
             function changePublished(id){
-                setCSTF();
+                setCSRF();
                 
                 // Ajax通信を開始
                 $.ajax({
                 url: 'http://localhost:8000/v1/image/'+id,
                 type: 'PATCH',
                 dataType: 'json',
+                data: {
+                    "thisPublishedFlag" : "1",
+                },
                 timeout: 5000,
                 })
                 .done(function(data1,textStatus,jqXHR) {
@@ -138,14 +141,14 @@
                     @foreach ($mangaAll as $manga)
                         <div class="inline-block_test">
                             <a href="edit/<?php echo $manga['number_of_works']?>">編集</a>
-                            <a href="#modal">削除</a>
+                            <a href="#modal" onclick="changeDeleteId(<?php echo $manga['number_of_works']?>)">削除</a>
                             <div class="remodal" data-remodal-id="modal">
                                 <button data-remodal-action="close" class="remodal-close"></button>
                                 <p id="test_text">削除しますか？</p>
-                                <input type="button" value="削除" onclick="deleteManga(<?php echo $manga['number_of_works']?>)">
+                                <input type="button" value="削除" onclick="deleteManga()">
                             </div>
                             <button type="button" onclick="location.href='/view/<?php echo $manga['number_of_works']?>'">
-                                <img id="image_<?php echo $manga["number_of_works"]; ?>" src="Storage/test.jpeg" width="300px">
+                                <img id="image_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
                             </button>
                             <button type="button" onclick="changePublished(<?php echo $manga['number_of_works']?>)">
                                 @if($manga["published_flag"])

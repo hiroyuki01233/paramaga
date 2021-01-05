@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Auth;
 class EditController extends Controller
 {
     public function edit($id){
-        $manga = new Manga;
-
-        $mangaAll = Manga::where('user_id',Auth::user()->id)->where('number_of_works',$id)->get();
-
-        return $mangaAll->toArray();
+        return view('edit',compact('id'));
     }
 }

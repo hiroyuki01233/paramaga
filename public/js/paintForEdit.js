@@ -20,8 +20,18 @@ con.fillRect(0, 0, 1920, 1080);
 var nowImage = 0;
 var images = {};
 
-window.onload = function() {
+function setCSRF(){
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        if (!options.crossDomain) {
+            const token = $('meta[name="csrf-token"]').attr('content');
+            if (token) {
+                return jqXHR.setRequestHeader('X-CSRF-Token', token);
+            }
+        }
+    });
+}
 
+$(document).ready( function(){
     
     // イベント登録
     // マウス
@@ -34,9 +44,35 @@ window.onload = function() {
     window.location.hash = "1" ;
 
     var image = canvas.toDataURL('image/jpeg', 0.5);
-    images["1"] = image;
+
+    setCSRF();
     
-} 
+    $.ajax({
+        url: 'http://localhost:8000/v1/image/'+id+'/edit',
+        type: 'GET',
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) {    
+        images = result;
+        const defaultImage = result;
+        $.each(result,function(index,value){
+            if(!typeof(result[index])) return false;
+            if(index == 1) return true;
+            $('#change_canvas_buttons').append('<input type="button" value="'+(index)+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+        })
+        var img = new Image();
+        img.src = images[1];
+        img.onload = function(){
+            con.drawImage(img, 0, 0, 1600, 790);
+        }
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
+    });
+
+});
 // セレクトボックス変更時に色を変更する
 function changeColor(){
 
@@ -123,21 +159,14 @@ function saveNow(){
 }
 
 function saveImages(){
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        if (!options.crossDomain) {
-            const token = $('meta[name="csrf-token"]').attr('content');
-            if (token) {
-                return jqXHR.setRequestHeader('X-CSRF-Token', token);
-            }
-        }
-    });
-    
+    setCSRF();
+
     $('#test_text').text('通信中...');
 
     // Ajax通信を開始
     $.ajax({
-      url: 'http://localhost:8000/v1/image',
-      type: 'POST',
+      url: 'http://localhost:8000/v1/image/'+id,
+      type: 'PATCH',
       data: {
           "title" : $('#title').val(),
           "image_1" : images[1],

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Manga;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MangaController extends Controller
 {
@@ -16,6 +17,6 @@ class MangaController extends Controller
         ->select("title","number_of_works","published_flag")
         ->get();
 
-        return view('manga',compact('mangaAll'));
+        return view('manga',compact("mangaAll"));
     }
 }

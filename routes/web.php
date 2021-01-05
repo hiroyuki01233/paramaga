@@ -15,8 +15,8 @@ Route::get('/v1/image/thumbnailPub','App\Http\Controllers\ImageController@thumbn
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/manga', 'App\Http\Controllers\MangaController@index');
     Route::get('/create', 'App\Http\Controllers\CreateController@index');
-    Route::get('/v1/image/thumbnailMe', 'App\Http\Controllers\ImageController@thumbnailForMyself');
-    Route::apiResource('/v1/image', 'App\Http\Controllers\ImageController');
+    Route::get('/v1/image/myMangaThumbnaiAll', 'App\Http\Controllers\ImageController@myMangaThumbnaiAll');
+    Route::Resource('/v1/image', 'App\Http\Controllers\ImageController');
     Route::get('/edit/{id}','App\Http\Controllers\EditController@edit');
     Route::get('info','App\Http\Controllers\IndexController@info');
 });

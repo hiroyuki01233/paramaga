@@ -45,6 +45,8 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()) return \App::abort(404);
+
         $manga = new Manga;
         $mangaWorks = Manga::where('user_id',Auth::user()->id)->select("number_of_works")->get();
 
@@ -90,28 +92,10 @@ class ImageController extends Controller
             unset($data);
         }
 
+        $manga->number_of_paper = $i-1;
         $manga->save();
 
         return true;
-
-        // $file_name = "/storage/test1.jpeg";
-        // file_put_contents(".".$file_name, base64_decode($data[1]));
-
-        // $image = new Image;
-
-        // $image->user_id = Auth::user()->name;
-        // $image->file_name = $file_name;
-
-        // $image->save();
-
-        // return json_encode($request->input('file'));
-
-        // $image = new Image;
-
-        // $image->user_id = $request;
-        // $image->file_name = $request->name;
-
-        // $flight->save();
     }
 
     /**
@@ -122,7 +106,7 @@ class ImageController extends Controller
      */
     public function show($id)
     {
-        //
+        return "show ok";
     }
 
     /**
@@ -133,7 +117,22 @@ class ImageController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(!Auth::user()) return \App::abort(404);
+        $imageAll = Manga::where('user_id',Auth::user()->id)
+        ->where('number_of_works',$id)
+        ->select('image_1', 'image_2', 'image_3','image_4','image_5','image_6','image_7','image_8','image_9','image_10')
+        ->get()->toArray();
+        $imageAll = json_decode(json_encode($imageAll), true);
+
+        $i = 1;
+        foreach($imageAll[0] as $number => $path){
+            if(empty($path)) break;
+            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get($path));
+            $i++;
+        }
+
+        return json_encode($iamges);
+
     }
 
     /**
@@ -145,13 +144,50 @@ class ImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $manga = Manga::where('user_id',Auth::user()->id)->where('number_of_works',$id)->select("id","published_flag")->get()->toArray();
-        $id = $manga[0]["id"];
-        $pubFlagNow = $manga[0]["published_flag"];
-        $pubFlag = ($pubFlagNow) ? 0 : 1;
-        $mangaModel = Manga::find($id);
-        $mangaModel->published_flag = $pubFlag;
-        $mangaModel->save();
+        if(!Auth::user()) return \App::abort(404);
+        if(!empty($request->thisPublishedFlag)){
+            $manga = Manga::where('user_id',Auth::user()->id)->where('number_of_works',$id)->select("id","published_flag")->get()->toArray();
+            $id = $manga[0]["id"];
+            $pubFlagNow = $manga[0]["published_flag"];
+            $pubFlag = ($pubFlagNow) ? 0 : 1;
+            $mangaModel = Manga::find($id);
+            $mangaModel->published_flag = $pubFlag;
+            $mangaModel->save();
+            return true;
+        }
+
+        $mangaId = Manga::where('user_id',Auth::user()->id)->where('number_of_works',$id)->select("id")->get()->toArray();
+        $mangaId = $mangaId[0]["id"];
+
+        $manga = Manga::find($mangaId);
+        $manga->title = $request->input("title");
+
+        if(Storage::exists('private/image/'.Auth::user()->id."/".$id)){
+            Storage::deleteDirectory('private/image/'.Auth::user()->id."/".$id);
+        };
+
+        if(!Storage::exists('private/image/'.Auth::user()->id)) Storage::makeDirectory('private/image/'.Auth::user()->id);
+        if(!Storage::exists('private/image/'.Auth::user()->id."/".$id)) Storage::makeDirectory('private/image/'.Auth::user()->id."/".$id);
+
+        for($i = 1; $i <= 10; $i++){
+            if(empty($request->input("image_".$i))) break;
+
+            $data = $request->input("image_".$i);
+            $data = explode(',', $data);
+
+            $hash = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 30);
+            $file_name = "private/image/".Auth::user()->id."/".$id."/".$hash.".jpeg";
+            $manga->{ "image_".$i } = $file_name;
+
+            $image = base64_decode($data[1]);
+            Storage::put($file_name, $image);
+            unset($image);
+            unset($data);
+        }
+
+        $manga->number_of_paper = $i-1;
+        $manga->save();
+
         return true;
     }
 
@@ -163,6 +199,7 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()) return \App::abort(404);
         $imageAll = Manga::where('user_id',Auth::user()->id)
         ->where('number_of_works',$id)
         ->select('image_1', 'image_2', 'image_3','image_4','image_5','image_6','image_7','image_8','image_9','image_10')
@@ -179,7 +216,6 @@ class ImageController extends Controller
 
     public function thumbnailPublic(Request $request)
     {
-
         $filePath = \DB::table('users')
             ->select('manga.image_1')
             ->join('manga', 'users.id', '=', 'manga.user_id')
@@ -195,17 +231,20 @@ class ImageController extends Controller
 
     }
 
-    public function thumbnailForMyself(Request $request)
+    public function myMangaThumbnaiAll(Request $request)
     {
+        if(!Auth::user()) return \App::abort(404);
         $filePath = Manga::where('user_id',Auth::user()->id)
-            ->where('number_of_works',$request->number)
-            ->select("image_1")
+            ->select("number_of_works","image_1")
             ->get()->toArray();
         $filePath = json_decode(json_encode($filePath), true);
 
-        $base64data = base64_encode(Storage::get($filePath[0]["image_1"]));
+        foreach($filePath as $file){
+            if(Storage::exists($file["image_1"])){
+                $iamges[$file['number_of_works']] = "data:image/jpeg;base64,".base64_encode(Storage::get($file["image_1"]));
+            };
+        }
 
-        return json_encode("data:image/jpeg;base64,".$base64data);
-
+        return json_encode($iamges);
     }
 }
