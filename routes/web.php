@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/','App\Http\Controllers\IndexController@index');
 
-Route::get('/parapara/{name}', 'App\Http\Controllers\IndexController@paraparaView');
+Route::get('/view/{name}', 'App\Http\Controllers\IndexController@view');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('save',function(){
     return view('save');

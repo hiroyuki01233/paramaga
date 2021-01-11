@@ -11,11 +11,11 @@ class MangaController extends Controller
 {
     public function index()
     {
-        $manga = new Manga;
-
-        $mangaAll = Manga::where('user_id',Auth::user()->id)
-        ->select("title","number_of_works","published_flag")
-        ->get();
+        $mangaAll = \DB::table('users')
+        ->select('manga.title','manga.number_of_works','manga.url','manga.published_flag','users.pen_name')
+        ->join('manga', 'users.id', '=', 'manga.user_id')
+        ->get()->toArray();
+        $mangaAll = json_decode(json_encode($mangaAll), true);
 
         return view('manga',compact("mangaAll"));
     }

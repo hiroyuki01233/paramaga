@@ -27,10 +27,18 @@ class IndexController extends Controller
         exit;
     }
 
-    public function paraparaView($name)
+    public function view($name, Request $request)
     {
-        print($name);
-        return view("view",compact("name"));
+        $manga_url = $request->m;
+        $manga = \DB::table('users')
+        ->select('users.name','manga.title','manga.number_of_paper','users.pen_name')
+        ->join('manga', 'users.id', '=', 'manga.user_id')
+        ->where('pen_name',$name)
+        ->where('url', $manga_url)
+        ->get()->toArray();
+        $manga = json_decode(json_encode($manga[0]), true);
+
+        return view("view",compact("manga"));
     }
 
 }

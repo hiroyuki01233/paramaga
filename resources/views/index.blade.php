@@ -248,7 +248,7 @@
 @foreach ($userManga as $manga)
 <div class="main_div">
     <div class="inline-block_test">
-        <button type="button" onclick="location.href='parapara/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
+        <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
             <img id="<?php echo "image_".$manga['pen_name']."_".$manga['number_of_works'] ?>" src="/storage/loading.jpeg" width="800px" >
         </button>
         <p>作品 : <?php echo $manga["title"]?></p>

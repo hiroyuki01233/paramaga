@@ -147,7 +147,7 @@
                                 <p id="test_text">削除しますか？</p>
                                 <input type="button" value="削除" onclick="deleteManga()">
                             </div>
-                            <button type="button" onclick="location.href='/view/<?php echo $manga['number_of_works']?>'">
+                            <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
                                 <img id="image_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
                             </button>
                             <button type="button" onclick="changePublished(<?php echo $manga['number_of_works']?>)">
