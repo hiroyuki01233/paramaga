@@ -141,7 +141,7 @@ class ImageController extends Controller
     {
         if(!Auth::user()) return \App::abort(404);
         if(!preg_match("/^[0-9]+$/", $id)) return \App::abort(404);
-        
+
         if(!empty($request->thisPublishedFlag)){
             $manga = Manga::where('user_id',Auth::user()->id)->where('number_of_works',$id)->select("id","published_flag")->get()->toArray();
             $id = $manga[0]["id"];
@@ -241,21 +241,46 @@ class ImageController extends Controller
         $name = $request->penName;
         $url = $request->url;
 
-        $imageAll = \DB::table('users')
-        ->select('image_1', 'image_2', 'image_3','image_4','image_5','image_6','image_7','image_8','image_9','image_10')
-        ->join('manga', 'users.id', '=', 'manga.user_id')
-        ->where('pen_name',$name)
-        ->where('url', $url)
-        ->get()->toArray();
-        $imageAll = json_decode(json_encode($imageAll), true);
+        $manga = \DB::table('users')
+            ->select('number_of_works','number_of_paper')
+            ->join('manga', 'users.id', '=', 'manga.user_id')
+            ->where('pen_name',$name)
+            ->where('url', $url)
+            ->where('published_flag', 1)
+            ->get()->toArray();
+        $manga = json_decode(json_encode($manga), true);
+        $mangaNumber = $manga[0]['number_of_works'];
+        $iamgeCount = $manga[0]['number_of_paper'];
 
-        $i = 1;
-        foreach($imageAll[0] as $number => $path){
-            if(empty($path)) break;
-            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get($path));
-            $i++;
+        for($i = 1; $i <= $iamgeCount; $i++){
+            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$mangaNumber."/".$i.".jpeg"));
         }
 
         return json_encode($iamges);
     }
+
+    public function previewManga(Request $request)
+    {
+        if(!Auth::user()) return \App::abort(404);
+        $name = $request->penName;
+        $url = $request->url;
+
+        $manga = \DB::table('users')
+            ->select('number_of_works','number_of_paper')
+            ->join('manga', 'users.id', '=', 'manga.user_id')
+            ->where('pen_name',$name)
+            ->where('url', $url)
+            ->get()->toArray();
+        $manga = json_decode(json_encode($manga), true);
+        $mangaNumber = $manga[0]['number_of_works'];
+        $iamgeCount = $manga[0]['number_of_paper'];
+
+        for($i = 1; $i <= $iamgeCount; $i++){
+            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$mangaNumber."/".$i.".jpeg"));
+        }
+
+        return json_encode($iamges);
+
+    }
+
 }

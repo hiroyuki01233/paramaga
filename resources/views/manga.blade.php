@@ -147,9 +147,15 @@
                                 <p id="test_text">削除しますか？</p>
                                 <input type="button" value="削除" onclick="deleteManga()">
                             </div>
-                            <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
-                                <img id="manga_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
-                            </button>
+                            @if($manga["published_flag"])
+                                <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
+                                    <img id="manga_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
+                                </button>
+                            @else
+                                <button type="button" onclick="location.href='preview/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
+                                    <img id="manga_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
+                                </button>
+                            @endif
                             <button type="button" onclick="changePublished(<?php echo $manga['number_of_works']?>)">
                                 @if($manga["published_flag"])
                                     <p>非公開に</p>

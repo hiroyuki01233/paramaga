@@ -1,6 +1,16 @@
+var images;
+
 function playManga(){
-    console.log(url);
-    console.log(penName);
+    var count = 1;
+    var playScreen = function(){
+        $('#playScreen').children('img').attr('src', images[count]);
+        var id = setTimeout(playScreen, 100);
+        if(typeof images[count + 1] == 'undefined'){
+            clearTimeout(id);
+        }
+        count++;
+    }
+    playScreen();
 }
 
 function setCSRF(){
@@ -29,19 +39,7 @@ $(document).ready( function(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {    
-        console.log(result);
-        // images = result;
-        // const defaultImage = result;
-        // $.each(result,function(index,value){
-        //     if(!typeof(result[index])) return false;
-        //     if(index == 1) return true;
-        //     $('#change_canvas_buttons').append('<input type="button" value="'+(index)+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
-        // })
-        // var img = new Image();
-        // img.src = images[1];
-        // img.onload = function(){
-        //     con.drawImage(img, 0, 0, 1280, 720);
-        // }
+        images = result;
     })
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);

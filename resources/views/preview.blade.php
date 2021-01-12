@@ -17,13 +17,64 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal.min.js"></script>
 
-
         @livewireStyles
-        <script src="{{ asset('/js/play.js') }}"></script>
+
+        <!-- Scripts -->
+        <script src="{{ mix('js/app.js') }}" defer></script>
         <script>
+            var images;
             const penName = @json($manga["pen_name"]);
             const url = @json($manga["url"]);
+
+            function playManga(){
+                var count = 1;
+                var playScreen = function(){
+                    $('#playScreen').children('img').attr('src', images[count]);
+                    var id = setTimeout(playScreen, 100);
+                    if(typeof images[count + 1] == 'undefined'){
+                        clearTimeout(id);
+                    }
+                    count++;
+                }
+                playScreen();
+            }
+
+            function setCSRF(){
+                $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                    if (!options.crossDomain) {
+                        const token = $('meta[name="csrf-token"]').attr('content');
+                        if (token) {
+                            return jqXHR.setRequestHeader('X-CSRF-Token', token);
+                        }
+                    }
+                });
+            }
+
+            $(document).ready( function(){
+
+                setCSRF();
+                
+                $.ajax({
+                    url: 'http://localhost:8000/v1/image/previewManga',
+                    type: 'GET',
+                    data: {
+                        "penName" : penName,
+                        "url" : url
+                    },
+                    dataType: 'json',
+                    timeout: 5000,
+                })
+                .done(function(result,textStatus,jqXHR) {    
+                    images = result;
+                })
+                .fail(function(data1,textStatus,jqXHR) {
+                    var data2 = JSON.stringify(data1);
+                    console.log(data2);
+                });
+
+            });
         </script>
+
         <style>
             .images {
                 margin: 5%;
@@ -32,13 +83,7 @@
             .detail {
                 text-align: center;
             }
-            .add_comment {
-                margin: 1%;
-            }
         </style>
-
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -54,12 +99,10 @@
                         <span><?php echo $manga["name"]?></span>
                         <span>@<?php echo $manga["pen_name"]?></span>
                         <span>作品 : <?php echo $manga["title"]?></span>
-                        <div class="add_comment">
-                            <textarea name="comment" rows="1" cols="100"></textarea>
-                        </div>
                     </div>
                 </div>
             </main>
         </div>
+
     </body>
 </html>
