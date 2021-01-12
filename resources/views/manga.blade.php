@@ -53,7 +53,7 @@
                 })
                 .done(function(result,textStatus,jqXHR) {
                     $.each(mangaAll,function(index,value){
-                        document.getElementById("image_" + value["number_of_works"]).src = result[value["number_of_works"]];
+                        document.getElementById("manga_" + value["number_of_works"]).src = result[value["number_of_works"]];
                     })
                 })
                 .fail(function(data1,textStatus,jqXHR) {
@@ -148,11 +148,11 @@
                                 <input type="button" value="削除" onclick="deleteManga()">
                             </div>
                             <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
-                                <img id="image_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
+                                <img id="manga_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
                             </button>
                             <button type="button" onclick="changePublished(<?php echo $manga['number_of_works']?>)">
                                 @if($manga["published_flag"])
-                                    <p>非公開にする</p>
+                                    <p>非公開に</p>
                                 @else
                                     <p>公開する</p>
                                 @endif
@@ -160,6 +160,7 @@
                             <p>作品 : <?php echo $manga["title"]?></p>
                         </div>
                     @endforeach
+                    <br>
                     <button type="button" onclick="location.href='/create'" width="300px">
                         <div class="inline-block_test plus_button">
                             +

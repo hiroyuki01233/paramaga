@@ -15,10 +15,12 @@ var canvas = document.getElementById('canvas');
 var con = canvas.getContext('2d');
 
 con.fillStyle = 'rgb(255,255,255)';
-con.fillRect(0, 0, 1920, 1080);
+con.fillRect(0, 0, 1280, 720);
 
 var nowImage = 0;
 var images = {};
+var changedImages = [];
+var postImages = {};
 
 function setCSRF(){
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
@@ -64,7 +66,7 @@ $(document).ready( function(){
         var img = new Image();
         img.src = images[1];
         img.onload = function(){
-            con.drawImage(img, 0, 0, 1600, 790);
+            con.drawImage(img, 0, 0, 1280, 720);
         }
     })
     .fail(function(data1,textStatus,jqXHR) {
@@ -90,6 +92,7 @@ function startDraw(e){
 }
 
 function buttonClick(color){
+    console.log(changedImages);
     gColor = color;
     console.log(color);
 }
@@ -106,7 +109,6 @@ function bigLine(){
 
 // 描画
 function Draw(e){
-    
     if (flgDraw == true){
         
         var x = e.offsetX;
@@ -136,7 +138,8 @@ function Draw(e){
 function endDraw(){
     
     flgDraw = false;
-    
+    if(changedImages.indexOf(window.location.hash.slice(1)) == -1) changedImages.push(window.location.hash.slice(1));
+
 }
 
 function saveCanvas()
@@ -161,25 +164,19 @@ function saveNow(){
 function saveImages(){
     setCSRF();
 
+    $.each(changedImages, function(index, value){
+        postImages["image_" + value] = images[value];
+      })
+    postImages["title"] = $('#title').val();
+    console.log(postImages);
+
     $('#test_text').text('通信中...');
 
     // Ajax通信を開始
     $.ajax({
       url: 'http://localhost:8000/v1/image/'+id,
       type: 'PATCH',
-      data: {
-          "title" : $('#title').val(),
-          "image_1" : images[1],
-          "image_2" : images[2],
-          "image_3" : images[3],
-          "image_4" : images[4],
-          "image_5" : images[5],
-          "image_6" : images[6],
-          "image_7" : images[7],
-          "image_8" : images[8],
-          "image_9" : images[9],
-          "image_10" : images[10],
-        },
+      data: postImages,
       dataType: 'json',
       timeout: 5000,
     })
@@ -200,7 +197,7 @@ function canvasPlus(){
     var image = canvas.toDataURL('image/jpeg', 1);
     images[window.location.hash.slice(1)] = image;
     con.fillStyle = 'rgb(255,255,255)';
-    con.fillRect(0, 0, 1600, 790);
+    con.fillRect(0, 0, 1280, 720);
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
     if(newImageNumber == 10) {
@@ -215,11 +212,11 @@ function changeCanvas(id,hash){
         var img = new Image();
         img.src = images[id];
         img.onload = function(){
-            con.drawImage(img, 0, 0, 1600, 790);
+            con.drawImage(img, 0, 0, 1280, 720);
         }
     }else{
         con.fillStyle = 'rgb(255,255,255)';
-        con.fillRect(0, 0, 1600, 790);
+        con.fillRect(0, 0, 1280, 720);
     }
     window.location.hash = id;
 }

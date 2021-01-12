@@ -31,7 +31,7 @@ class IndexController extends Controller
     {
         $manga_url = $request->m;
         $manga = \DB::table('users')
-        ->select('users.name','manga.title','manga.number_of_paper','users.pen_name')
+        ->select('users.name','manga.title','manga.number_of_paper','users.pen_name','manga.url')
         ->join('manga', 'users.id', '=', 'manga.user_id')
         ->where('pen_name',$name)
         ->where('url', $manga_url)

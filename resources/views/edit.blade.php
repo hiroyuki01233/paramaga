@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <br>
-                <canvas id="canvas" width="1600" height="790" style="background-color:white;"></canvas> <br>
+                <canvas id="canvas" width="1280" height="720" style="background-color:white;"></canvas> <br>
                 <div id="change_canvas_buttons">
                     <input type="button" value="1" onclick="changeCanvas(this.value,window.location.hash.slice(1))">
                 </div>

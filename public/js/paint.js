@@ -21,8 +21,6 @@ var nowImage = 0;
 var images = {};
 
 window.onload = function() {
-
-    
     // イベント登録
     // マウス
     const canvas = document.getElementById('canvas');
@@ -171,7 +169,7 @@ function canvasPlus(){
     var image = canvas.toDataURL('image/jpeg', 1);
     images[window.location.hash.slice(1)] = image;
     con.fillStyle = 'rgb(255,255,255)';
-    con.fillRect(0, 0, 1600, 790);
+    con.fillRect(0, 0, 1280, 720);
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
     if(newImageNumber == 10) {
@@ -186,11 +184,11 @@ function changeCanvas(id,hash){
         var img = new Image();
         img.src = images[id];
         img.onload = function(){
-            con.drawImage(img, 0, 0, 1600, 790);
+            con.drawImage(img, 0, 0, 1280, 720);
         }
     }else{
         con.fillStyle = 'rgb(255,255,255)';
-        con.fillRect(0, 0, 1600, 790);
+        con.fillRect(0, 0, 1280, 720);
     }
     window.location.hash = id;
 }
