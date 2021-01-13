@@ -242,18 +242,19 @@ class ImageController extends Controller
         $url = $request->url;
 
         $manga = \DB::table('users')
-            ->select('number_of_works','number_of_paper')
+            ->select('users.id','number_of_works','number_of_paper')
             ->join('manga', 'users.id', '=', 'manga.user_id')
             ->where('pen_name',$name)
             ->where('url', $url)
             ->where('published_flag', 1)
             ->get()->toArray();
-        $manga = json_decode(json_encode($manga), true);
-        $mangaNumber = $manga[0]['number_of_works'];
-        $iamgeCount = $manga[0]['number_of_paper'];
+        $manga = json_decode(json_encode($manga[0]), true);
+        $mangaNumber = $manga['number_of_works'];
+        $iamgeCount = $manga['number_of_paper'];
+        $userId = $manga['id'];
 
         for($i = 1; $i <= $iamgeCount; $i++){
-            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$mangaNumber."/".$i.".jpeg"));
+            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".$userId."/".$mangaNumber."/".$i.".jpeg"));
         }
 
         return json_encode($iamges);
