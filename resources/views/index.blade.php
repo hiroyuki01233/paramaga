@@ -64,8 +64,7 @@
                         type: 'GET',
                         dataType: 'json',
                         data: { 
-                            "penName": value["pen_name"],
-                            "number": value["number_of_works"],
+                            "url": value["url"],
                         },
                         timeout: 5000,
                     })
@@ -73,7 +72,7 @@
                         var data2 = JSON.stringify(data1);
                         data2 = data2.slice(1);
                         data2 = data2.slice(0, -1);
-                        document.getElementById("image_" + value["pen_name"] + "_" + value["number_of_works"]).src = data2
+                        document.getElementById("image_" + value["pen_name"] + "_" + value["url"]).src = data2
                     })
                     .fail(function(data1,textStatus,jqXHR) {
                         var data2 = JSON.stringify(data1);
@@ -249,7 +248,7 @@
 <div class="main_div">
     <div class="inline-block_test">
         <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
-            <img id="<?php echo "image_".$manga['pen_name']."_".$manga['number_of_works'] ?>" src="/storage/loading.jpeg" width="800px" >
+            <img id="<?php echo "image_".$manga['pen_name']."_".$manga['url'] ?>" src="/storage/loading.jpeg" width="800px" >
         </button>
         <p>作品 : <?php echo $manga["title"]?></p>
     </div>

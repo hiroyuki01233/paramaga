@@ -71,7 +71,9 @@ class ImageController extends Controller
         $manga->user_id = Auth::user()->id;
         $manga->title = $request->input("title");
         $manga->published_flag = 0;
-        $manga->url = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 30);
+        // $manga->url = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 30);
+
+        $manga->url = md5(uniqid(rand(),1));
 
         if(!Storage::exists('private/image/'.Auth::user()->id)) Storage::makeDirectory('private/image/'.Auth::user()->id);
         if(!Storage::exists('private/image/'.Auth::user()->id."/".$number)) Storage::makeDirectory('private/image/'.Auth::user()->id."/".$number);
@@ -209,8 +211,7 @@ class ImageController extends Controller
         $filePath = \DB::table('users')
             ->select('users.id','manga.number_of_works')
             ->join('manga', 'users.id', '=', 'manga.user_id')
-            ->where('users.pen_name',$request->penName)
-            ->where('manga.number_of_works',$request->number)
+            ->where('manga.url',$request->url)
             ->where('published_flag', 1)
             ->get()->toArray();
         $filePath = json_decode(json_encode($filePath), true);
@@ -238,13 +239,11 @@ class ImageController extends Controller
 
     public function publicMangaByFlameNumber(Request $request)
     {
-        $name = $request->penName;
         $url = $request->url;
 
         $manga = \DB::table('users')
             ->select('users.id','number_of_works','number_of_paper')
             ->join('manga', 'users.id', '=', 'manga.user_id')
-            ->where('pen_name',$name)
             ->where('url', $url)
             ->where('published_flag', 1)
             ->get()->toArray();
@@ -263,13 +262,11 @@ class ImageController extends Controller
     public function previewManga(Request $request)
     {
         if(!Auth::user()) return \App::abort(404);
-        $name = $request->penName;
         $url = $request->url;
 
         $manga = \DB::table('users')
             ->select('number_of_works','number_of_paper')
             ->join('manga', 'users.id', '=', 'manga.user_id')
-            ->where('pen_name',$name)
             ->where('url', $url)
             ->get()->toArray();
         $manga = json_decode(json_encode($manga), true);

@@ -58,7 +58,6 @@
                     url: 'http://localhost:8000/v1/image/previewManga',
                     type: 'GET',
                     data: {
-                        "penName" : penName,
                         "url" : url
                     },
                     dataType: 'json',

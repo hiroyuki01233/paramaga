@@ -32,7 +32,6 @@ $(document).ready( function(){
         url: 'http://localhost:8000/v1/image/publicMangaByFlameNumber',
         type: 'GET',
         data: {
-            "penName" : penName,
             "url" : url
         },
         dataType: 'json',

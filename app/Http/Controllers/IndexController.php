@@ -13,7 +13,7 @@ class IndexController extends Controller
     public function index()
     {
         $userManga = \DB::table('users')
-            ->select('manga.title','manga.number_of_works','manga.url','users.pen_name')
+            ->select('manga.title','manga.url','users.pen_name')
             ->join('manga', 'users.id', '=', 'manga.user_id')
             ->where('published_flag','1')
             ->get()->toArray();
@@ -34,7 +34,6 @@ class IndexController extends Controller
         $manga = \DB::table('users')
             ->select('users.name','manga.title','manga.number_of_paper','users.pen_name','manga.url')
             ->join('manga', 'users.id', '=', 'manga.user_id')
-            ->where('pen_name',$name)
             ->where('url', $manga_url)
             ->where('published_flag', 1)
             ->get()->toArray();
@@ -49,7 +48,6 @@ class IndexController extends Controller
         $manga = \DB::table('users')
             ->select('users.name','manga.title','manga.number_of_paper','users.pen_name','manga.url')
             ->join('manga', 'users.id', '=', 'manga.user_id')
-            ->where('pen_name',$name)
             ->where('url', $manga_url)
             ->get()->toArray();
         $manga = json_decode(json_encode($manga[0]), true);

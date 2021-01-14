@@ -20,6 +20,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/v1/image/previewManga', 'App\Http\Controllers\ImageController@previewManga');
     Route::get('/v1/image/myMangaThumbnaiAll', 'App\Http\Controllers\ImageController@myMangaThumbnaiAll');
     Route::Resource('/v1/image', 'App\Http\Controllers\ImageController');
+    Route::Resource('/v1/comment', 'App\Http\Controllers\CommentController');
+    Route::Resource('/v1/like', 'App\Http\Controllers\LikeController');
     Route::get('/edit/{id}','App\Http\Controllers\EditController@edit');
     Route::get('info','App\Http\Controllers\IndexController@info');
 });
