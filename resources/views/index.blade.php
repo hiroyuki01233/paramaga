@@ -52,13 +52,9 @@
             window.onload = function () {
                 setCSRF();
 
-                const userManga = @json($userManga);
-
-                console.log(userManga);
-                
+                const userManga = @json($userManga);                
 
                 $.each(userManga, function(index, value){
-                    console.log(index + ':' + value["title"]);
                     $.ajax({
                         url: 'http://localhost:8000/v1/image/thumbnailPub',
                         type: 'GET',

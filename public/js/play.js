@@ -41,9 +41,28 @@ function getComments(id){
 
         $.each(comments,function(index,value){
             if(!typeof(result[index])) return false;
-            $('#comments').append('<div class="user_comment"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p></div><br>');
+            if(myPenName == value['pen_name']){
+                $('#comments').append('<div class="user_comment" id="'+value['id']+'"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p><input type="button" class="delete_btn" value="削除" onclick="deleteComment('+value['id']+')"></div>');
+            }else{
+                $('#comments').append('<div class="user_comment" id="'+value['id']+'"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p></div>');
+            }
         })
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
+    });
+}
 
+function deleteComment(id){
+    $.ajax({
+        url: 'http://localhost:8000/v1/comment/'+id,
+        type: 'DELETE',
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) { 
+        $("#"+id).remove();
     })
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
@@ -67,6 +86,7 @@ function addComment(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
+        console.log("succsess")
         $('#comment_text').val("");
         $('#comments').prepend('<div class="user_comment"><p>'+myPenName+'</p>'+'<p class="comment">'+comment+'</p></div><br>');
     })

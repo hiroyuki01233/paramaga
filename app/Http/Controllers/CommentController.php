@@ -17,7 +17,7 @@ class CommentController extends Controller
     public function index(Request $request)
     {
         $page = $request->page;
-        $comments = Comment::where("url",$request->url)->select("pen_name","comment")->orderBy('id', 'desc')->paginate(50);
+        $comments = Comment::where("url",$request->url)->select("id","pen_name","comment")->orderBy('id', 'desc')->paginate(50);
 
         return $comments;
     }
@@ -95,6 +95,10 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Comment::where('id',$id)->where("user_id", Auth::user()->id)->exists()){
+            Comment::where("id",$id)->delete();
+            return true;
+        }
+        return false;
     }
 }

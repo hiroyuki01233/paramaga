@@ -7,6 +7,8 @@ Route::get('/','App\Http\Controllers\IndexController@index');
 Route::get('/view/{name}', 'App\Http\Controllers\IndexController@view');
 Route::get('/preview/{name}', 'App\Http\Controllers\IndexController@preview');
 Route::get('/v1/image/publicMangaByFlameNumber', 'App\Http\Controllers\ImageController@publicMangaByFlameNumber');
+Route::Resource('/v1/comment', 'App\Http\Controllers\CommentController');
+Route::Resource('/v1/like', 'App\Http\Controllers\LikeController');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('save',function(){
     return view('save');
@@ -20,8 +22,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/v1/image/previewManga', 'App\Http\Controllers\ImageController@previewManga');
     Route::get('/v1/image/myMangaThumbnaiAll', 'App\Http\Controllers\ImageController@myMangaThumbnaiAll');
     Route::Resource('/v1/image', 'App\Http\Controllers\ImageController');
-    Route::Resource('/v1/comment', 'App\Http\Controllers\CommentController');
-    Route::Resource('/v1/like', 'App\Http\Controllers\LikeController');
     Route::get('/edit/{id}','App\Http\Controllers\EditController@edit');
     Route::get('info','App\Http\Controllers\IndexController@info');
 });

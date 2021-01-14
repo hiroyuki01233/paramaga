@@ -16,6 +16,7 @@ class IndexController extends Controller
             ->select('manga.title','manga.url','users.pen_name')
             ->join('manga', 'users.id', '=', 'manga.user_id')
             ->where('published_flag','1')
+            ->orderBy('manga.id', 'desc')
             ->get()->toArray();
         $userManga = json_decode(json_encode($userManga), true);
         return view("index",compact("userManga"));
@@ -39,7 +40,9 @@ class IndexController extends Controller
             ->get()->toArray();
         $manga = json_decode(json_encode($manga[0]), true);
 
-        return view("view",compact("manga"));
+        $myPenName = "";
+        if(Auth::user()) $myPenName = Auth::user()->pen_name;
+        return view("view",compact("manga","myPenName"));
     }
 
     public function preview($name, Request $request){
