@@ -16,8 +16,6 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $manga = new Manga;
-
         $mangaAll = Manga::all();
 
         return $mangaAll->toArray();
@@ -233,8 +231,8 @@ class ImageController extends Controller
                 $iamges[$file['number_of_works']] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$file['number_of_works']."/1.jpeg"));
             };
         }
-
-        return json_encode($iamges);
+        if(!empty($iamges)) return json_encode($iamges);
+        return true;
     }
 
     public function publicMangaByFlameNumber(Request $request)

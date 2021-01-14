@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Manga;
 
 class CommentController extends Controller
 {
@@ -11,9 +14,12 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $page = $request->page;
+        $comments = Comment::where("url",$request->url)->select("pen_name","comment")->orderBy('id', 'desc')->paginate(50);
+
+        return $comments;
     }
 
     /**
@@ -34,7 +40,17 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!Auth::user()) return \App::abort(404);
+        $requestAll = $request->all();
+        if(Manga::where('url',$request->url)->where("published_flag", 1)->exists()){
+            $comment = new Comment;
+            $comment->user_id = Auth::user()->id;
+            $comment->url = $request->url;
+            $comment->pen_name = Auth::user()->pen_name;
+            $comment->comment = $request->comment;
+            $comment->save();
+            return true;
+        }
     }
 
     /**
@@ -43,9 +59,9 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+
     }
 
     /**

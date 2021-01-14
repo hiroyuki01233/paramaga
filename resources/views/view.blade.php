@@ -23,10 +23,11 @@
         <script>
             const penName = @json($manga["pen_name"]);
             const url = @json($manga["url"]);
+            const myPenName = @json(Auth::user()->pen_name);
         </script>
         <style>
             .images {
-                margin: 5%;
+                margin: 3%;
                 text-align: center;
             }
             .detail {
@@ -34,6 +35,19 @@
             }
             .add_comment {
                 margin: 1%;
+            }
+            .user_comment {
+                margin-left: 13%;
+            }
+            .comment {
+                margin-left: 2%;
+            }
+            .add_comment_btn {
+                margin-left: 2%;
+            }
+            .textarea {
+                width: 1000px;
+                height: 2em;
             }
         </style>
 
@@ -55,8 +69,11 @@
                         <span>@<?php echo $manga["pen_name"]?></span>
                         <span>作品 : <?php echo $manga["title"]?></span>
                         <div class="add_comment">
-                            <textarea name="comment" rows="1" cols="100"></textarea>
+                            <input type="textarea" id="comment_text" name="comment" value="" class="textarea" rows="4" cols="40">
+                            <input type="button" value="投稿" class="add_comment_btn" onclick="addComment()">
                         </div>
+                    </div>
+                    <div id="comments">
                     </div>
                 </div>
             </main>

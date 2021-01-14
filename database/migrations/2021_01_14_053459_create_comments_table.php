@@ -15,9 +15,10 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->integer("user_id");
-            $table->integer("manga_id");
-            $table->string('title', 500);
+            $table->string("user_id");
+            $table->string("pen_name");
+            $table->string("url");
+            $table->string('comment', 500);
             $table->timestamps();
         });
     }
