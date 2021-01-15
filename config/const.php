@@ -8,6 +8,6 @@ if (env('APP_ENV') == "local") {
 
 if (env('APP_ENV') == 'production') {
     return[
-        'HOST_NAME' => "{{config('const.HOST_NAME')}}"
+        'HOST_NAME' => "https://paramaga.com"
     ];
 }
