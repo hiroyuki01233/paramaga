@@ -16,7 +16,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal-default-theme.min.css">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal.min.js"></script>
-
+        <link rel="shortcut icon" href="{{ asset('storage/icon.ico') }}">
 
         @livewireStyles
         <script src="{{ asset('/js/play.js') }}"></script>
@@ -53,7 +53,7 @@
                 margin-left: 2%;
             }
             .textarea {
-                width: 1000px;
+                width: 50%;
                 height: 2em;
             }
             .delete_btn {

@@ -15,6 +15,8 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal.min.js"></script>
 
+        <link rel="shortcut icon" href="{{ asset('storage/icon.ico') }}">
+
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
@@ -189,8 +191,37 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-jet-responsive-nav-link href="/" :active="request()->routeIs('user')">
-                {{ __('dashboard') }}
+                {{ __('Home') }}
             </x-jet-responsive-nav-link>
+                @if (Route::has('login'))
+                    @auth
+                        <x-jet-responsive-nav-link href="/user">
+                            {{ Auth::user()->name }}
+                        </x-jet-responsive-nav-link>
+
+                        <x-jet-responsive-nav-link href="{{ route('profile.show') }}">
+                            {{ __('Profile') }}
+                        </x-jet-responsive-nav-link>
+                        
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-jet-responsive-nav-link href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                {{ __('Logout') }}
+                            </x-jet-responsive-nav-link>
+                        </form>
+                    @else
+                        <x-jet-responsive-nav-link href="/login" :active="request()->routeIs('user')">
+                            {{ __('login') }}
+                        </x-jet-responsive-nav-link>
+                        <x-jet-responsive-nav-link href="/register" :active="request()->routeIs('user')">
+                            {{ __('register') }}
+                        </x-jet-responsive-nav-link>
+                    @endauth
+                @endif
         </div>
 
 

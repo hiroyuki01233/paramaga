@@ -105,4 +105,87 @@
             </div>
         </div>
     </div>
+
+    <!-- Responsive Navigation Menu -->
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="/" :active="request()->routeIs('user')">
+                {{ __('Home') }}
+            </x-jet-responsive-nav-link>
+                @if (Route::has('login'))
+                    @auth
+                        <x-jet-responsive-nav-link href="/user">
+                            {{ Auth::user()->name }}
+                        </x-jet-responsive-nav-link>
+
+                        <x-jet-responsive-nav-link href="{{ route('profile.show') }}">
+                            {{ __('Profile') }}
+                        </x-jet-responsive-nav-link>
+                        
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-jet-responsive-nav-link href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                {{ __('Logout') }}
+                            </x-jet-responsive-nav-link>
+                        </form>
+                    @endauth
+                @else
+                    <x-jet-responsive-nav-link href="/login" :active="request()->routeIs('user')">
+                        {{ __('login') }}
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="/register" :active="request()->routeIs('user')">
+                        {{ __('register') }}
+                    </x-jet-responsive-nav-link>
+                @endif
+        </div>
+    
+    
+            @if (Route::has('login'))
+                    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+                        @auth
+                            <!-- Responsive Settings Options -->
+                            <div class="pt-4 pb-1 border-t border-gray-200">
+                                <div class="flex items-center px-4">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    </div>
+    
+                                    <div class="ml-3">
+                                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                                    </div>
+                                </div>
+    
+                                <div class="mt-3 space-y-1">
+                                    <!-- Account Management -->
+                                    <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                                        {{ __('Profile') }}
+                                    </x-jet-responsive-nav-link>
+    
+                                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                        <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
+                                            {{ __('API Tokens') }}
+                                        </x-jet-responsive-nav-link>
+                                    @endif
+    
+                                    <!-- Authentication -->
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+    
+                                        <x-jet-responsive-nav-link href="{{ route('logout') }}"
+                                                        onclick="event.preventDefault();
+                                                                    this.closest('form').submit();">
+                                            {{ __('Logout') }}
+                                        </x-jet-responsive-nav-link>
+                                    </form>
+                                </div>
+                            </div>
+                        @endauth
+                    </div>
+                @endif
+        </div>
 </nav>
