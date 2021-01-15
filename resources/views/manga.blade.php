@@ -47,7 +47,7 @@
                 const mangaAll = @json($mangaAll);
                 
                 $.ajax({
-                    url: 'https://paramaga.com/v1/image/myMangaThumbnaiAll',
+                    url: '{{config('const.HOST_NAME')}}/v1/image/myMangaThumbnaiAll',
                     type: 'GET',
                     dataType: 'json',
                     timeout: 5000,
@@ -71,7 +71,7 @@
 
                 // Ajax通信を開始
                 $.ajax({
-                url: 'https://paramaga.com/v1/image/'+deleteId,
+                url: '{{config('const.HOST_NAME')}}/v1/image/'+deleteId,
                 type: 'DELETE',
                 dataType: 'json',
                 timeout: 5000,
@@ -92,7 +92,7 @@
                 
                 // Ajax通信を開始
                 $.ajax({
-                url: 'https://paramaga.com/v1/image/'+id,
+                url: '{{config('const.HOST_NAME')}}/v1/image/'+id,
                 type: 'PATCH',
                 dataType: 'json',
                 data: {

@@ -58,7 +58,7 @@
 
                 $.each(userManga, function(index, value){
                     $.ajax({
-                        url: 'https://paramaga.com/v1/image/thumbnailPub',
+                        url: '{{config('const.HOST_NAME')}}/v1/image/thumbnailPub',
                         type: 'GET',
                         dataType: 'json',
                         data: { 

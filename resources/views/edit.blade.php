@@ -18,7 +18,8 @@
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     <script> 
-            const id = '{{$id}}';
+            const id = {{$id}};
+            const HOST_NAME = "{{config('const.HOST_NAME')}}";
     </script>
 
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal.min.css">

@@ -145,7 +145,7 @@ function saveImages(){
 
     // Ajax通信を開始
     $.ajax({
-        url: 'https://paramaga.com/v1/image',
+        url: HOST_NAME+'/v1/image',
         type: 'POST',
         data: postImages,
         dataType: 'json',
@@ -173,7 +173,7 @@ function saveImages(){
             if(postImages.length == 0) break;
             postImages["title"] = $('#title').val();
             $.ajax({
-                url: 'https://paramaga.com/v1/image/'+mangaId,
+                url: HOST_NAME+'/v1/image/'+mangaId,
                 type: 'PATCH',
                 data: postImages,
                 dataType: 'json',

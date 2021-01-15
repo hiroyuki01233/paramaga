@@ -55,7 +55,7 @@
                 setCSRF();
                 
                 $.ajax({
-                    url: 'https://paramaga.com/v1/image/previewManga',
+                    url: '{{config('const.HOST_NAME')}}/v1/image/previewManga',
                     type: 'GET',
                     data: {
                         "url" : url

@@ -24,6 +24,7 @@
             const penName = @json($manga["pen_name"]);
             const url = @json($manga["url"]);
             var myPenName = @json($myPenName);
+            const HOST_NAME = "{{config('const.HOST_NAME')}}";
         </script>
         <style>
             .images {
