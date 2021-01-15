@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Paramaga') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -56,7 +56,7 @@
 
                 $.each(userManga, function(index, value){
                     $.ajax({
-                        url: 'http://localhost:8000/v1/image/thumbnailPub',
+                        url: 'https://paramaga.com/v1/image/thumbnailPub',
                         type: 'GET',
                         dataType: 'json',
                         data: { 
@@ -243,10 +243,10 @@
 @foreach ($userManga as $manga)
 <div class="main_div">
     <div class="inline-block_test">
-        <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
-            <img id="<?php echo "image_".$manga['pen_name']."_".$manga['url'] ?>" src="/storage/loading.jpeg" width="800px" >
+        <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m= {{ $manga['url'] }}'">
+            <img id="{{ "image_".$manga['pen_name']."_".$manga['url'] }}" src="/storage/loading.jpeg" width="800px" >
         </button>
-        <p>作品 : <?php echo $manga["title"]?></p>
+        <p>作品 : {{ $manga["title"] }}</p>
     </div>
 </div>
 @endforeach

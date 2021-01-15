@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'paramaga') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -55,7 +55,7 @@
                 setCSRF();
                 
                 $.ajax({
-                    url: 'http://localhost:8000/v1/image/previewManga',
+                    url: 'https://paramaga.com/v1/image/previewManga',
                     type: 'GET',
                     data: {
                         "url" : url
@@ -95,9 +95,9 @@
                         </button>
                     </div>
                     <div class="detail">
-                        <span><?php echo $manga["name"]?></span>
-                        <span>@<?php echo $manga["pen_name"]?></span>
-                        <span>作品 : <?php echo $manga["title"]?></span>
+                        <span> {{ $manga["name"] }}</span>
+                        <span>@ {{ $manga["pen_name"] }}</span>
+                        <span>作品 : {{ $manga["title"] }}</span>
                     </div>
                 </div>
             </main>

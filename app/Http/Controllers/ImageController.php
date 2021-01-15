@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Manga;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -93,7 +94,7 @@ class ImageController extends Controller
         $manga->number_of_paper = $i-1;
         $manga->save();
 
-        return true;
+        return json_encode($number);
     }
 
     /**
@@ -161,6 +162,7 @@ class ImageController extends Controller
 
         $requestAll = $request->all();
         foreach($requestAll as $number => $image){
+            if(count(Storage::files('private/image/'.Auth::user()->id."/".$id)) == 51) break;
             if(strpos($number,'image_') !== false){
                 if(!preg_match("/^[0-9]+$/", str_replace('image_', '', $number))) continue;
                 $fileName = str_replace('image_', '', $number).".jpeg";
@@ -191,15 +193,17 @@ class ImageController extends Controller
     {
         if(!Auth::user()) return \App::abort(404);
         $image = Manga::where('user_id',Auth::user()->id)
-        ->where('number_of_works',$id)
-        ->select('number_of_works')
-        ->get()->toArray();
+            ->where('number_of_works',$id)
+            ->select('number_of_works','url')
+            ->get()->toArray();
 
         if(Storage::exists('private/image/'.Auth::user()->id."/".$image[0]["number_of_works"])){
             Storage::deleteDirectory('private/image/'.Auth::user()->id."/".$image[0]["number_of_works"]);
         }
 
-        Manga::where('user_id',Auth::user()->id)->where('number_of_works',$id)->delete();
+        Comment::where("url",$image[0]["url"])->delete();
+
+        Manga::where('user_id',Auth::user()->id)->where('number_of_works',$image[0]["number_of_works"])->delete();
 
         return true;
     }

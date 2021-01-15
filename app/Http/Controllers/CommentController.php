@@ -40,7 +40,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Auth::user()) return \App::abort(404);
+        if(!Auth::user()) return "plz login";
         $requestAll = $request->all();
         if(Manga::where('url',$request->url)->where("published_flag", 1)->exists()){
             $comment = new Comment;
@@ -95,6 +95,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()) return \App::abort(404);
         if(Comment::where('id',$id)->where("user_id", Auth::user()->id)->exists()){
             Comment::where("id",$id)->delete();
             return true;

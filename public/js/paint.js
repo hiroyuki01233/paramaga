@@ -51,7 +51,9 @@ function startDraw(e){
     
 }
 
+//色変更　テスト
 function buttonClick(color){
+    console.log(images);
     gColor = color;
     console.log(color);
 }
@@ -132,35 +134,61 @@ function saveImages(){
     
     $('#test_text').text('通信中...');
 
+    i = 0;
+    var postImages = {};
+    $.each(images, function(index, value){
+        postImages["image_" + index] = value;
+        postImages["title"] = $('#title').val();
+        if(i == 10) return false;
+        i++;
+    })
+
     // Ajax通信を開始
     $.ajax({
-      url: 'http://localhost:8000/v1/image',
-      type: 'POST',
-      data: {
-          "title" : $('#title').val(),
-          "image_1" : images[1],
-          "image_2" : images[2],
-          "image_3" : images[3],
-          "image_4" : images[4],
-          "image_5" : images[5],
-          "image_6" : images[6],
-          "image_7" : images[7],
-          "image_8" : images[8],
-          "image_9" : images[9],
-          "image_10" : images[10],
-        },
-      dataType: 'json',
-      timeout: 5000,
-    })
-    .done(function(data1,textStatus,jqXHR) {
-        var data2 = JSON.stringify(data1);
-        $('#test_text').text("成功");
-        console.log(data2);
-        window.location.href = '/manga';
-    })
-    .fail(function(data1,textStatus,jqXHR) {
-        $('#test_text').text(JSON.stringify(data1));
-    });
+        url: 'https://paramaga.com/v1/image',
+        type: 'POST',
+        data: postImages,
+        dataType: 'json',
+        timeout: 5000,
+        })
+        .done(function(data1,textStatus,jqXHR) {
+            var mangaId = JSON.stringify(data1);
+            $('#test_text').text("初回作成成功");
+            create10over(mangaId);
+        })
+        .fail(function(data1,textStatus,jqXHR) {
+            $('#test_text').text(JSON.stringify(data1));
+        });
+
+    function create10over(mangaId){
+        postImages = {};
+        for(i = 1; i <= 5; i++){
+            number = i * 10;
+            $.each(images, function(index, value){
+                if(index >= number && index <= (number + 9)){
+                    postImages["image_" + index] = value;
+                }
+            })
+            console.log(postImages);
+            if(postImages.length == 0) break;
+            postImages["title"] = $('#title').val();
+            $.ajax({
+                url: 'https://paramaga.com/v1/image/'+mangaId,
+                type: 'PATCH',
+                data: postImages,
+                dataType: 'json',
+                timeout: 5000,
+            })
+            .done(function(data1,textStatus,jqXHR) {
+                var data2 = JSON.stringify(data1);
+                $('#test_text').text("成功");
+            })
+            .fail(function(data1,textStatus,jqXHR) {
+                $('#test_text').text(JSON.stringify(data1));
+            });
+            postImages = {};
+        }
+    }
 };
 
 function canvasPlus(){
@@ -172,7 +200,7 @@ function canvasPlus(){
     con.fillRect(0, 0, 1280, 720);
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
-    if(newImageNumber == 10) {
+    if(newImageNumber == 50) {
         $("#plus_button").remove();
     }
 }

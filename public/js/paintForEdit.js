@@ -50,7 +50,7 @@ $(document).ready( function(){
     setCSRF();
     
     $.ajax({
-        url: 'http://localhost:8000/v1/image/'+id+'/edit',
+        url: 'https://paramaga.com/v1/image/'+id+'/edit',
         type: 'GET',
         dataType: 'json',
         timeout: 5000,
@@ -168,13 +168,12 @@ function saveImages(){
         postImages["image_" + value] = images[value];
       })
     postImages["title"] = $('#title').val();
-    console.log(postImages);
 
     $('#test_text').text('通信中...');
 
     // Ajax通信を開始
     $.ajax({
-      url: 'http://localhost:8000/v1/image/'+id,
+      url: 'https://paramaga.com/v1/image/'+id,
       type: 'PATCH',
       data: postImages,
       dataType: 'json',

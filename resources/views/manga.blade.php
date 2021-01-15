@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'paramaga') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -46,7 +46,7 @@
                 const mangaAll = @json($mangaAll);
                 
                 $.ajax({
-                    url: 'http://localhost:8000/v1/image/myMangaThumbnaiAll',
+                    url: 'https://paramaga.com/v1/image/myMangaThumbnaiAll',
                     type: 'GET',
                     dataType: 'json',
                     timeout: 5000,
@@ -70,7 +70,7 @@
 
                 // Ajax通信を開始
                 $.ajax({
-                url: 'http://localhost:8000/v1/image/'+deleteId,
+                url: 'https://paramaga.com/v1/image/'+deleteId,
                 type: 'DELETE',
                 dataType: 'json',
                 timeout: 5000,
@@ -91,7 +91,7 @@
                 
                 // Ajax通信を開始
                 $.ajax({
-                url: 'http://localhost:8000/v1/image/'+id,
+                url: 'https://paramaga.com/v1/image/'+id,
                 type: 'PATCH',
                 dataType: 'json',
                 data: {
@@ -140,30 +140,30 @@
                 <div class="main-div">
                     @foreach ($mangaAll as $manga)
                         <div class="inline-block_test">
-                            <a href="edit/<?php echo $manga['number_of_works']?>">編集</a>
-                            <a href="#modal" onclick="changeDeleteId(<?php echo $manga['number_of_works']?>)">削除</a>
+                            <a href="edit/{{ $manga['number_of_works'] }}">編集</a>
+                            <a href="#modal" onclick="changeDeleteId({{ $manga['number_of_works'] }})">削除</a>
                             <div class="remodal" data-remodal-id="modal">
                                 <button data-remodal-action="close" class="remodal-close"></button>
                                 <p id="test_text">削除しますか？</p>
                                 <input type="button" value="削除" onclick="deleteManga()">
                             </div>
                             @if($manga["published_flag"])
-                                <button type="button" onclick="location.href='view/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
-                                    <img id="manga_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
+                                <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }} ?m={{ $manga['url'] }}'">
+                                    <img id="manga_{{ $manga["number_of_works"] }}" src="/storage/loading.jpeg" width="300px">
                                 </button>
                             @else
-                                <button type="button" onclick="location.href='preview/<?php echo $manga['pen_name']?>?m=<?php echo $manga['url']?>'">
-                                    <img id="manga_<?php echo $manga["number_of_works"]; ?>" src="Storage/loading.jpeg" width="300px">
+                                <button type="button" onclick="location.href='preview/ {{ $manga['pen_name'] }}?m={{ $manga['url'] }}'">
+                                    <img id="manga_{{ $manga["number_of_works"] }}" src="/storage/loading.jpeg" width="300px">
                                 </button>
                             @endif
-                            <button type="button" onclick="changePublished(<?php echo $manga['number_of_works']?>)">
+                            <button type="button" onclick="changePublished({{ $manga['number_of_works'] }})">
                                 @if($manga["published_flag"])
                                     <p>非公開に</p>
                                 @else
                                     <p>公開する</p>
                                 @endif
                             </button>
-                            <p>作品 : <?php echo $manga["title"]?></p>
+                            <p>作品 : {{ $manga["title"] }}</p>
                         </div>
                     @endforeach
                     <br>

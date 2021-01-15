@@ -26,7 +26,7 @@ function setCSRF(){
 
 function getComments(id){
     $.ajax({
-        url: 'http://localhost:8000/v1/comment',
+        url: 'https://paramaga.com/v1/comment',
         type: 'GET',
         data: {
             "url" : url,
@@ -56,7 +56,7 @@ function getComments(id){
 
 function deleteComment(id){
     $.ajax({
-        url: 'http://localhost:8000/v1/comment/'+id,
+        url: 'https://paramaga.com/v1/comment/'+id,
         type: 'DELETE',
         dataType: 'json',
         timeout: 5000,
@@ -76,7 +76,7 @@ function addComment(){
     var comment = $('input[name="comment"]').val();
 
     $.ajax({
-        url: 'http://localhost:8000/v1/comment',
+        url: 'https://paramaga.com/v1/comment',
         type: 'POST',
         data: {
             "url" : url,
@@ -101,7 +101,7 @@ $(document).ready( function(){
     setCSRF();
 
     $.ajax({
-        url: 'http://localhost:8000/v1/image/publicMangaByFlameNumber',
+        url: 'https://paramaga.com/v1/image/publicMangaByFlameNumber',
         type: 'GET',
         data: {
             "url" : url

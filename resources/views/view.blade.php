@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'paramaga') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -77,9 +77,10 @@
                         </button>
                     </div>
                     <div class="detail">
-                        <span><?php echo $manga["name"]?></span>
-                        <span>@<?php echo $manga["pen_name"]?></span>
-                        <span>作品 : <?php echo $manga["title"]?></span>
+                        <span>{{ $manga["name"] }}</span>
+                        <span>@ {{ $manga["pen_name"] }}</span>
+                        <span>作品 : {{ $manga["title"] }}</span>
+                        <input type="button" value="いいね" class="like_btn" onclick="addLike()">
                         <div class="add_comment">
                             <input type="textarea" id="comment_text" name="comment" value="" class="textarea">
                             <input type="button" value="投稿" class="add_comment_btn" onclick="addComment()">
