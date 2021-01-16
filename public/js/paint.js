@@ -133,6 +133,10 @@ function saveImages(){
     });
     
     $('#test_text').text('通信中...');
+    if($('#title').val() == "") {
+        $('#test_text').text('タイトルを入力してください');
+        return false;
+    }
 
     i = 0;
     var postImages = {};
@@ -157,7 +161,8 @@ function saveImages(){
             create10over(mangaId);
         })
         .fail(function(data1,textStatus,jqXHR) {
-            $('#test_text').text(JSON.stringify(data1));
+            console.log(JSON.stringify(data1));
+            $('#test_text').text("保存に失敗しました。やり直してください");
         });
 
     function create10over(mangaId){
@@ -169,7 +174,6 @@ function saveImages(){
                     postImages["image_" + index] = value;
                 }
             })
-            console.log(postImages);
             if(postImages.length == 0) break;
             postImages["title"] = $('#title').val();
             $.ajax({
@@ -181,10 +185,10 @@ function saveImages(){
             })
             .done(function(data1,textStatus,jqXHR) {
                 var data2 = JSON.stringify(data1);
-                $('#test_text').text("成功");
+                $('#test_text').text("保存しました");
             })
             .fail(function(data1,textStatus,jqXHR) {
-                $('#test_text').text(JSON.stringify(data1));
+                $('#test_text').text("保存に失敗しました。やり直してください");
             });
             postImages = {};
         }
