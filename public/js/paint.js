@@ -8,14 +8,14 @@ var gY = 0;
 
 // 描画色
 var gColor = 'black';
-var gWidth = 0;
+var gWidth = 10;
 
 // '2dコンテキスト'を取得
 var canvas = document.getElementById('canvas');
 var con = canvas.getContext('2d');
 
 con.fillStyle = 'rgb(255,255,255)';
-con.fillRect(0, 0, 1920, 1080);
+con.fillRect(0, 0, 1280, 720);
 
 var nowImage = 0;
 var images = {};
@@ -58,10 +58,10 @@ function buttonClick(color){
     console.log(color);
 }
 
-var volume = document.getElementById('volume');
+var size = document.getElementById('size');
 
-volume.addEventListener('change', function () {
-  gWidth = volume.value.length*3;
+size.addEventListener('change', function () {
+  gWidth = size.value.length*10;
 }, false);
 
 function bigLine(){
