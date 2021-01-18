@@ -85,7 +85,8 @@ function Draw(e){
         con.beginPath();
         con.moveTo(gX, gY);
         con.lineTo(x, y);
-        con.lineCap = "butt";
+        con.lineJoin = "round";
+        con.lineCap = "round";
         con.closePath();
         con.stroke();
 
