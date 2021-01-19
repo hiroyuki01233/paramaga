@@ -5,7 +5,7 @@
 </svg> --}}
 
 <svg class="w-16 h-16" viewbox="0 0 48 48" fill="none" version="1.0" xmlns="http://www.w3.org/2000/svg"
-        width="2224.000000pt" height="1668.000000pt" viewBox="0 0 2224.000000 1668.000000"
+        width="2224.000000pt" height="1668.000000pt" viewBox="0 0 2224 1668"
         preserveAspectRatio="xMidYMid meet">
 
         <g transform="translate(0.000000,1668.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">

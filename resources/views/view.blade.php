@@ -78,10 +78,19 @@
                         </button>
                     </div>
                     <div class="detail">
+                        @if ( $manga["profile_photo_path"] )
+                            <a href="/profile?u={{$manga["pen_name"]}}"><img class="h-8 w-8 rounded-full object-cover" src="/storage/{{ $manga["profile_photo_path"] }}" alt="{{$manga["pen_name"]}}" /></a>
+                        @else
+                            <a href="/profile?u={{$manga["pen_name"]}}"><img class="h-8 w-8 rounded-full object-cover" src="/storage/UserIcon.png" alt="{{$manga["pen_name"]}}" /></a>
+                        @endif
                         <span>{{ $manga["name"] }}</span>
-                        <span>@ {{ $manga["pen_name"] }}</span>
+                        <span>{{ "@" }}{{ $manga["pen_name"] }}</span>
                         <span>作品 : {{ $manga["title"] }}</span>
-                        <input type="button" value="いいね" class="like_btn" onclick="addLike()">
+                        @if($liked)
+                            <input type="button" value="いいね取り消し" class="like_btn" onclick="deleteLike()">
+                        @else
+                            <input type="button" value="いいね" class="like_btn" onclick="addLike()">
+                        @endif
                         <div class="add_comment">
                             <input type="textarea" id="comment_text" name="comment" value="" class="textarea">
                             <input type="button" value="投稿" class="add_comment_btn" onclick="addComment()">

@@ -17,6 +17,8 @@ class ImageController extends Controller
      */
     public function index()
     {
+        return \App::abort(404);
+
         $mangaAll = Manga::all();
 
         return $mangaAll->toArray();
@@ -29,6 +31,8 @@ class ImageController extends Controller
      */
     public function create()
     {
+        return \App::abort(404);
+
         $image = new Image;
 
         $imageAll = Image::all();
@@ -77,6 +81,13 @@ class ImageController extends Controller
         if(!Storage::exists('private/image/'.Auth::user()->id)) Storage::makeDirectory('private/image/'.Auth::user()->id);
         if(!Storage::exists('private/image/'.Auth::user()->id."/".$number)) Storage::makeDirectory('private/image/'.Auth::user()->id."/".$number);
 
+        // $data = explode(',', $request->input("image_1"));
+        // $image = base64_decode($data[1]);
+        // $type = finfo_buffer(finfo_open(), $image, FILEINFO_EXTENSION);
+        // var_dump($type);
+        // var_dump(imageresolution($request->input("image_1")));
+        // var_dump($image);
+        // exit;
         for($i = 1; $i <= 10; $i++){
             if(empty($request->input("image_".$i))) break;
 
@@ -105,6 +116,7 @@ class ImageController extends Controller
      */
     public function show($id)
     {
+        return \App::abort(404);
         return "show ok";
     }
 

@@ -203,6 +203,11 @@ function canvasPlus(){
     images[window.location.hash.slice(1)] = image;
     con.fillStyle = 'rgb(255,255,255)';
     con.fillRect(0, 0, 1280, 720);
+    // var img = new Image();
+    // img.src = images[window.location.hash.slice(1) - 1];
+    // img.onload = function(){
+    //     con.drawImage(img, 0, 0, 1280, 720);
+    // }
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
     if(newImageNumber == 50) {

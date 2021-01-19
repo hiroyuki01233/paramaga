@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Like;
+use App\Models\Manga;
+use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
@@ -35,7 +38,15 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!Auth::user()) return "plz login";
+        if(Manga::where('url',$request->url)->where("published_flag", 1)->exists()){
+            $like = new Like;
+            $like->user_id = Auth::user()->id;
+            $like->url = $request->url;
+            $like->pen_name = Auth::user()->pen_name;
+            $like->save();
+            return true;
+        }    
     }
 
     /**
@@ -78,8 +89,10 @@ class LikeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($url)
     {
-        //
+        if(!Auth::user()) return \App::abort(404);
+        Like::where("url",$url)->where("user_id", Auth::user()->id)->delete();
+        return true;
     }
 }

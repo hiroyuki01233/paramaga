@@ -96,6 +96,46 @@ function addComment(){
     });
 }
 
+function addLike(){
+    setCSRF();
+    
+    $.ajax({
+        url: HOST_NAME+'/v1/like',
+        type: 'POST',
+        data: {
+            "url" : url,
+        },
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) {
+        console.log("succsess")
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
+    });
+}
+
+
+function deleteLike(){
+    setCSRF();
+    $.ajax({
+        url: HOST_NAME+'/v1/like/'+url,
+        type: 'DELETE',
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) {
+        console.log("succsess")
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
+    });
+}
+
+
 $(document).ready( function(){
 
     setCSRF();
