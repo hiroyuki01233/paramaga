@@ -168,7 +168,7 @@ function saveImages(){
 
     function create10over(mangaId){
         postImages = {};
-        for(i = 1; i <= 5; i++){
+        for(i = 1; i <= 20; i++){
             number = i * 10;
             $.each(images, function(index, value){
                 if(index >= number && index <= (number + 9)){

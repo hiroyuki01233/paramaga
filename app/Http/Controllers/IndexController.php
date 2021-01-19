@@ -19,6 +19,7 @@ class IndexController extends Controller
             ->join('manga', 'users.id', '=', 'manga.user_id')
             ->where('published_flag','1')
             ->orderBy('manga.id', 'desc')
+            ->limit(10)
             ->get()->toArray();
         $userManga = json_decode(json_encode($userManga), true);
         return view("index",compact("userManga"));

@@ -8,7 +8,7 @@ var gY = 0;
 
 // 描画色
 var gColor = 'black';
-var gWidth = 0;
+var gWidth = 10;
 
 // '2dコンテキスト'を取得
 var canvas = document.getElementById('canvas');
@@ -21,6 +21,7 @@ var nowImage = 0;
 var images = {};
 var changedImages = [];
 var postImages = {};
+var mangaPage = 1;
 
 function setCSRF(){
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
@@ -30,6 +31,49 @@ function setCSRF(){
                 return jqXHR.setRequestHeader('X-CSRF-Token', token);
             }
         }
+    });
+}
+
+function createBtn(){
+    $.each(images,function(index,value){
+        if(!typeof(images[index])) return false;
+        if(index == 1) return true;
+        $('#change_canvas_buttons').append('<input type="button" value="'+(index)+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+    })
+    var img = new Image();
+    img.src = images[1];
+    img.onload = function(){
+        con.drawImage(img, 0, 0, 1280, 720);
+    }
+}
+
+function getManga(page){
+    setCSRF();
+    $.ajax({
+        url: HOST_NAME+'/v1/image/'+id+'/edit',
+        type: 'GET',
+        data: {
+            "page" : page
+        },
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) {  
+        if(page >= 2){
+            Object.assign(images, result);
+        }else{
+            images = result;
+        }
+        mangaPage = mangaPage + 1;
+        if(mangaPage < 5){
+            getManga(mangaPage);
+        }else{
+            createBtn();
+        }
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
     });
 }
 
@@ -46,33 +90,7 @@ $(document).ready( function(){
     window.location.hash = "1" ;
 
     var image = canvas.toDataURL('image/jpeg', 0.5);
-
-    setCSRF();
-    
-    $.ajax({
-        url: HOST_NAME+'/v1/image/'+id+'/edit',
-        type: 'GET',
-        dataType: 'json',
-        timeout: 5000,
-    })
-    .done(function(result,textStatus,jqXHR) {    
-        images = result;
-        const defaultImage = result;
-        $.each(result,function(index,value){
-            if(!typeof(result[index])) return false;
-            if(index == 1) return true;
-            $('#change_canvas_buttons').append('<input type="button" value="'+(index)+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
-        })
-        var img = new Image();
-        img.src = images[1];
-        img.onload = function(){
-            con.drawImage(img, 0, 0, 1280, 720);
-        }
-    })
-    .fail(function(data1,textStatus,jqXHR) {
-        var data2 = JSON.stringify(data1);
-        console.log(data2);
-    });
+    getManga(mangaPage);
 
 });
 // セレクトボックス変更時に色を変更する
@@ -123,7 +141,8 @@ function Draw(e){
         con.beginPath();
         con.moveTo(gX, gY);
         con.lineTo(x, y);
-        con.lineCap = "butt";
+        con.lineJoin = "round";
+        con.lineCap = "round";
         con.closePath();
         con.stroke();
 

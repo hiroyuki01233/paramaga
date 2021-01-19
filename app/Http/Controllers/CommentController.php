@@ -16,7 +16,6 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        $page = $request->page;
         $comments = Comment::where("url",$request->url)->select("id","pen_name","comment")->orderBy('id', 'desc')->paginate(50);
 
         return $comments;

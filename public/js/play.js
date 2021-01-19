@@ -1,11 +1,42 @@
 var images;
 var commentPage = 1;
+var mangaPage = 1;
 function checkLogin() {
     if(!myPenName){
         location.href=HOST_NAME+"/login";
     }
     return true;
 }
+
+var max = 1;
+function getManga(page){
+    setCSRF();
+    $.ajax({
+        url: HOST_NAME+'/v1/image/publicMangaByFlameNumber',
+        type: 'GET',
+        data: {
+            "url" : url,
+            "page" : page
+        },
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) {  
+        imageAll = result["imageAll"];
+        max = Math.ceil(imageAll / 50)+1;
+        if(page >= 2){
+            Object.assign(images, result);
+        }else{
+            images = result;
+        }
+        mangaPage++;
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
+    });
+}
+
 function playManga(){
     var count = 1;
     var playScreen = function(){
@@ -15,6 +46,9 @@ function playManga(){
             clearTimeout(id);
         }
         count++;
+        if((count == 10 || count == 60 || count == 110 || count == 160) && mangaPage < max) {
+            getManga(mangaPage);
+        }
     }
     playScreen();
 }
@@ -45,7 +79,6 @@ function getComments(id){
         var numberOfComments = result["total"];
         var comments = result['data'];
         commentPage = commentPage + 1;
-        console.log(result);
         $.each(comments,function(index,value){
             if(!typeof(result[index])) return false;
             if(myPenName == value['pen_name']){
@@ -167,24 +200,6 @@ function changeLike(){
 }
 
 $(document).ready( function(){
-    setCSRF();
-
-    $.ajax({
-        url: HOST_NAME+'/v1/image/publicMangaByFlameNumber',
-        type: 'GET',
-        data: {
-            "url" : url
-        },
-        dataType: 'json',
-        timeout: 5000,
-    })
-    .done(function(result,textStatus,jqXHR) {    
-        images = result;
-    })
-    .fail(function(data1,textStatus,jqXHR) {
-        var data2 = JSON.stringify(data1);
-        console.log(data2);
-    });
-
+    getManga(mangaPage);
     getComments(commentPage);
 });

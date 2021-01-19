@@ -21,57 +21,12 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        <script src="{{ asset('/js/playForPreview.js') }}"></script>
         <script>
-            var images;
             const penName = @json($manga["pen_name"]);
             const url = @json($manga["url"]);
-
-            function playManga(){
-                var count = 1;
-                var playScreen = function(){
-                    $('#playScreen').children('img').attr('src', images[count]);
-                    var id = setTimeout(playScreen, 100);
-                    if(typeof images[count + 1] == 'undefined'){
-                        clearTimeout(id);
-                    }
-                    count++;
-                }
-                playScreen();
-            }
-
-            function setCSRF(){
-                $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-                    if (!options.crossDomain) {
-                        const token = $('meta[name="csrf-token"]').attr('content');
-                        if (token) {
-                            return jqXHR.setRequestHeader('X-CSRF-Token', token);
-                        }
-                    }
-                });
-            }
-
-            $(document).ready( function(){
-
-                setCSRF();
-                
-                $.ajax({
-                    url: '{{config('const.HOST_NAME')}}/v1/image/previewManga',
-                    type: 'GET',
-                    data: {
-                        "url" : url
-                    },
-                    dataType: 'json',
-                    timeout: 5000,
-                })
-                .done(function(result,textStatus,jqXHR) {    
-                    images = result;
-                })
-                .fail(function(data1,textStatus,jqXHR) {
-                    var data2 = JSON.stringify(data1);
-                    console.log(data2);
-                });
-
-            });
+            const HOST_NAME = "{{config('const.HOST_NAME')}}";
         </script>
 
         <style>

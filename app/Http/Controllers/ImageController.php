@@ -126,7 +126,7 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         if(!Auth::user()) return \App::abort(404);
         $image = Manga::where('user_id',Auth::user()->id)
@@ -135,11 +135,18 @@ class ImageController extends Controller
             ->get()->toArray();
         $image = json_decode(json_encode($image[0]), true);
 
-        for($i = 1; $i <= $image['number_of_paper']; $i++){
-            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$image['number_of_works']."/".$i.".jpeg"));
+        $page = (empty($request->page)) ? 1 : $request->page;
+        $startImage = $page * 50 - 49;
+        $images = [];
+        for($i = $startImage; $i < ($startImage + 50); $i++){
+            if(Storage::exists("private/image/".Auth::user()->id."/".$image['number_of_works']."/".$i.".jpeg")){
+                $images[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$image['number_of_works']."/".$i.".jpeg"));
+            }else{
+                break;
+            }
         }
 
-        return json_encode($iamges);
+        return json_encode($images);
 
     }
 
@@ -174,7 +181,7 @@ class ImageController extends Controller
 
         $requestAll = $request->all();
         foreach($requestAll as $number => $image){
-            if(count(Storage::files('private/image/'.Auth::user()->id."/".$id)) == 51) break;
+            if(count(Storage::files('private/image/'.Auth::user()->id."/".$id)) == 201) break;
             if(strpos($number,'image_') !== false){
                 if(!preg_match("/^[0-9]+$/", str_replace('image_', '', $number))) continue;
                 $fileName = str_replace('image_', '', $number).".jpeg";
@@ -261,14 +268,21 @@ class ImageController extends Controller
             ->where('url', $url)
             ->where('published_flag', 1)
             ->get()->toArray();
+
         $manga = json_decode(json_encode($manga[0]), true);
         $mangaNumber = $manga['number_of_works'];
         $iamgeCount = $manga['number_of_paper'];
         $userId = $manga['id'];
-
-        for($i = 1; $i <= $iamgeCount; $i++){
-            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".$userId."/".$mangaNumber."/".$i.".jpeg"));
+        $page = (empty($request->page)) ? 1 : $request->page;
+        $startImage = $page * 50 - 49;
+        for($i = $startImage; $i < ($startImage + 50); $i++){
+            if(Storage::exists("private/image/".$userId."/".$mangaNumber."/".$i.".jpeg")){
+                $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".$userId."/".$mangaNumber."/".$i.".jpeg"));
+            }else{
+                break;
+            }
         }
+        $iamges["imageAll"] = $manga['number_of_paper'];
 
         return json_encode($iamges);
     }
@@ -286,10 +300,16 @@ class ImageController extends Controller
         $manga = json_decode(json_encode($manga), true);
         $mangaNumber = $manga[0]['number_of_works'];
         $iamgeCount = $manga[0]['number_of_paper'];
-
-        for($i = 1; $i <= $iamgeCount; $i++){
-            $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$mangaNumber."/".$i.".jpeg"));
+        $page = (empty($request->page)) ? 1 : $request->page;
+        $startImage = $page * 50 - 49;
+        for($i = $startImage; $i < ($startImage + 50); $i++){
+            if(Storage::exists("private/image/".Auth::user()->id."/".$mangaNumber."/".$i.".jpeg")){
+                $iamges[$i] = "data:image/jpeg;base64,".base64_encode(Storage::get("private/image/".Auth::user()->id."/".$mangaNumber."/".$i.".jpeg"));
+            }else{
+                break;
+            }
         }
+        $iamges["imageAll"] = $manga[0]['number_of_paper'];
 
         return json_encode($iamges);
 
