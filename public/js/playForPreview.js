@@ -41,7 +41,7 @@ function playManga(){
     var count = 1;
     var playScreen = function(){
         $('#playScreen').children('img').attr('src', images[count]);
-        $("#flame").html(count  + "/" + imageAll);
+        $("#flame").html(count);
         var id = setTimeout(playScreen, 100);
         if(typeof images[count + 1] == 'undefined'){
             clearTimeout(id);
