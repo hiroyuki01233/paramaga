@@ -114,6 +114,11 @@
             </x-jet-responsive-nav-link>
                 @if (Route::has('login'))
                     @auth
+
+                        <x-jet-responsive-nav-link href="/manga">
+                            {{ __('リスト') }}
+                        </x-jet-responsive-nav-link>
+
                         <x-jet-responsive-nav-link href="/user">
                             {{ Auth::user()->name }}
                         </x-jet-responsive-nav-link>

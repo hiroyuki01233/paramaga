@@ -23,6 +23,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 Route::get('/profile', 'App\Http\Controllers\IndexController@userProfile');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/user', function () {
-    return view('user');
-})->name('user');
+Route::middleware(['auth:sanctum', 'verified'])->get('/user', 'App\Http\Controllers\IndexController@user')->name('user');
