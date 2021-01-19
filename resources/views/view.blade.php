@@ -63,6 +63,11 @@
                 margin-left: 100%;
                 margin-right: 10%;
             }
+            .commentCount {
+                font-size: 20px;
+                border-bottom: 1px solid;
+                margin-bottom: 3%;
+            }
         </style>
 
         <!-- Scripts -->
@@ -96,6 +101,10 @@
                             <input type="textarea" id="comment_text" name="comment" value="" class="textarea">
                             <input id="add_comment_btn" type="button" value="投稿" class="add_comment_btn" onclick="addComment()">
                         </div>
+                        <span style="font-size: 20px">いいね数 : {{ $likeCount }}</span>
+                    </div>
+                    <div class="commentCount user_comment">
+                        <p>コメント数 : {{ $commentCount }}</p>
                     </div>
                     <div id="comments">
                     </div>

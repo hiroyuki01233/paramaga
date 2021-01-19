@@ -53,8 +53,10 @@ class IndexController extends Controller
         $liked = false;
         if(Auth::user()) $liked = Like::where("url",$manga_url)->where("user_id",Auth::user()->id)->exists();
         $myPenName = "";
+        $commentCount = Comment::where("url",$manga_url)->count();
+        $likeCount = Like::where("url",$manga_url)->count();
         if(Auth::user()) $myPenName = Auth::user()->pen_name;
-        return view("view",compact("manga","myPenName","liked"));
+        return view("view",compact("manga","myPenName","liked","commentCount","likeCount"));
     }
 
     public function preview($name, Request $request){
