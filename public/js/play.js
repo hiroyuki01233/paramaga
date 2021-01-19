@@ -1,6 +1,7 @@
 var images;
 var commentPage = 1;
 var mangaPage = 1;
+var imageAll;
 function checkLogin() {
     if(!myPenName){
         location.href=HOST_NAME+"/login";
@@ -41,7 +42,7 @@ function playManga(){
     var count = 1;
     var playScreen = function(){
         $('#playScreen').children('img').attr('src', images[count]);
-        $("#flame").html(count);
+        $("#flame").html(count + "/" + imageAll);
         var id = setTimeout(playScreen, 100);
         if(typeof images[count + 1] == 'undefined'){
             clearTimeout(id);
