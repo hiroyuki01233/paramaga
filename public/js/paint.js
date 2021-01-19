@@ -210,7 +210,7 @@ function canvasPlus(){
     // }
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
-    if(newImageNumber == 50) {
+    if(newImageNumber == 200) {
         $("#plus_button").remove();
     }
 }
