@@ -24,6 +24,7 @@
             const penName = @json($manga["pen_name"]);
             const url = @json($manga["url"]);
             var myPenName = @json($myPenName);
+            var liked = @json($liked);
             const HOST_NAME = "{{config('const.HOST_NAME')}}";
         </script>
         <style>
@@ -87,13 +88,13 @@
                         <span>{{ "@" }}{{ $manga["pen_name"] }}</span>
                         <span>作品 : {{ $manga["title"] }}</span>
                         @if($liked)
-                            <input type="button" value="いいね取り消し" class="like_btn" onclick="deleteLike()">
+                            <input id="like_btn" type="button" value="いいね取り消し" class="like_btn" onclick="changeLike()">
                         @else
-                            <input type="button" value="いいね" class="like_btn" onclick="addLike()">
+                            <input id="like_btn" type="button" value="いいね" class="like_btn" onclick="changeLike()">
                         @endif
                         <div class="add_comment">
                             <input type="textarea" id="comment_text" name="comment" value="" class="textarea">
-                            <input type="button" value="投稿" class="add_comment_btn" onclick="addComment()">
+                            <input id="add_comment_btn" type="button" value="投稿" class="add_comment_btn" onclick="addComment()">
                         </div>
                     </div>
                     <div id="comments">

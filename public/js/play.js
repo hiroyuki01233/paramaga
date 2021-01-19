@@ -1,5 +1,11 @@
 var images;
 
+function checkLogin() {
+    if(!myPenName){
+        location.href=HOST_NAME+"/login";
+    }
+    return true;
+}
 function playManga(){
     var count = 1;
     var playScreen = function(){
@@ -71,7 +77,9 @@ function deleteComment(id){
 }
 
 function addComment(){
+    checkLogin()
     setCSRF();
+    $("#add_comment_btn").val("通信中...");
     
     var comment = $('input[name="comment"]').val();
 
@@ -86,7 +94,7 @@ function addComment(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
-        console.log("succsess")
+        $("#add_comment_btn").val("投稿");
         $('#comment_text').val("");
         $('#comments').prepend('<div class="user_comment"><p>'+myPenName+'</p>'+'<p class="comment">'+comment+'</p></div><br>');
     })
@@ -97,6 +105,7 @@ function addComment(){
 }
 
 function addLike(){
+    checkLogin()
     setCSRF();
     
     $.ajax({
@@ -109,7 +118,8 @@ function addLike(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
-        console.log("succsess")
+        $('#like_btn').val('いいね取り消し');
+        liked = 1;
     })
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
@@ -119,6 +129,7 @@ function addLike(){
 
 
 function deleteLike(){
+    checkLogin()
     setCSRF();
     $.ajax({
         url: HOST_NAME+'/v1/like/'+url,
@@ -127,7 +138,8 @@ function deleteLike(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
-        console.log("succsess")
+        $('#like_btn').val('いいね');
+        liked = 0;
     })
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
@@ -135,9 +147,16 @@ function deleteLike(){
     });
 }
 
+function changeLike(){
+    $('#like_btn').val('通信中...');
+    if(liked){
+        deleteLike()
+    }else{
+        addLike()
+    }
+}
 
 $(document).ready( function(){
-
     setCSRF();
 
     $.ajax({
