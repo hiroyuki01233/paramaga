@@ -39,6 +39,7 @@ function createBtn(){
         if(!typeof(images[index])) return false;
         if(index == 1) return true;
         $('#change_canvas_buttons').append('<input type="button" value="'+(index)+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+        if(index == 200) $("#plus_button").remove();
     })
     var img = new Image();
     img.src = images[1];

@@ -79,6 +79,7 @@
             <main>
                 <div>
                     <div class="images">
+                        <div id="flame">0</div>
                         <button type="button" id="playScreen" onclick="playManga()">
                             <img src="/storage/play.jpeg" width="1100px" >
                         </button>
