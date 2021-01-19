@@ -219,7 +219,7 @@ function canvasPlus(){
     con.fillRect(0, 0, 1280, 720);
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
     window.location.hash = newImageNumber;
-    if(newImageNumber == 10) {
+    if(newImageNumber == 200) {
         $("#plus_button").remove();
     }
 }
