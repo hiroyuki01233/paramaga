@@ -50,7 +50,8 @@ class IndexController extends Controller
             ->where('published_flag', 1)
             ->get()->toArray();
         $manga = json_decode(json_encode($manga[0]), true);
-        $liked = Like::where("url",$manga_url)->where("user_id",Auth::user()->id)->exists();
+        $liked = false;
+        if(Auth::user()) $liked = Like::where("url",$manga_url)->where("user_id",Auth::user()->id)->exists();
         $myPenName = "";
         if(Auth::user()) $myPenName = Auth::user()->pen_name;
         return view("view",compact("manga","myPenName","liked"));
