@@ -1,5 +1,5 @@
 var images;
-
+var commentPage = 1;
 function checkLogin() {
     if(!myPenName){
         location.href=HOST_NAME+"/login";
@@ -44,7 +44,8 @@ function getComments(id){
     .done(function(result,textStatus,jqXHR) {    
         var numberOfComments = result["total"];
         var comments = result['data'];
-
+        commentPage = commentPage + 1;
+        console.log(result);
         $.each(comments,function(index,value){
             if(!typeof(result[index])) return false;
             if(myPenName == value['pen_name']){
@@ -59,6 +60,15 @@ function getComments(id){
         console.log(data2);
     });
 }
+
+$(window).on('scroll', function () {
+    var doch = $(document).innerHeight(); //ページ全体の高さ
+    var winh = $(window).innerHeight(); //ウィンドウの高さ
+    var bottom = doch - winh; //ページ全体の高さ - ウィンドウの高さ = ページの最下部位置
+    if (bottom <= $(window).scrollTop()) {
+        getComments(commentPage);
+    }
+});
 
 function deleteComment(id){
     $.ajax({
@@ -176,5 +186,5 @@ $(document).ready( function(){
         console.log(data2);
     });
 
-    getComments(1);
+    getComments(commentPage);
 });
