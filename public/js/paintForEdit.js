@@ -30,8 +30,6 @@ size.addEventListener('change', function () {
   gWidth = size.value.length*10;
 }, false);
 
-
-
 function setCSRF(){
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
         if (!options.crossDomain) {
@@ -125,7 +123,7 @@ function buttonClick(color){
     console.log(color);
 }
 
-var volume = document.getElementById('volume');
+var volume = document.getElementById('size');
 
 volume.addEventListener('change', function () {
   gWidth = volume.value.length*3;
