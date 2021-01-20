@@ -198,7 +198,7 @@ function saveImages(){
 
 function canvasPlus(){
     var newImageNumber = Object.keys(images).length+1;
-    $('#change_canvas_buttons').append('<input class="manga_btn" type="button" value=" '+newImageNumber+' " onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+    $('#change_canvas_buttons').append('<input class="manga_btn" type="button" value="'+newImageNumber+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
     var image = canvas.toDataURL('image/jpeg', 1);
     images[window.location.hash.slice(1)] = image;
     con.fillStyle = 'rgb(255,255,255)';

@@ -41,6 +41,8 @@
             .manga_btn {
                 border: 2px solid #4072B3;
                 border-radius: 5px;
+                width:100px;
+                height:50px;
             }
             .change_buttons {
                 padding-bottom: 1%;
@@ -76,9 +78,9 @@
                 <canvas id="canvas" width="1280" height="720" style="background-color:white;"></canvas> <br>
                 <div class="change_buttons">
                     <div id="change_canvas_buttons">
-                        <input class="manga_btn" type="button" value=" 1 " onclick="changeCanvas(this.value,window.location.hash.slice(1))">
+                        <input class="manga_btn" type="button" value="1" onclick="changeCanvas(this.value,window.location.hash.slice(1))">
                     </div><br>
-                    <input class="manga_btn" style="margin-top: 1%" id="plus_button" type="button" value="  +  " onclick="canvasPlus(window.location.hash.slice(1))">
+                    <input class="manga_btn" style="margin-top: 1%" id="plus_button" type="button" value="+" onclick="canvasPlus(window.location.hash.slice(1))">
                 </div>
             </main>
         </div>
