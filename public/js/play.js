@@ -67,6 +67,7 @@ function setCSRF(){
 }
 
 function getComments(id){
+    commentPage = commentPage + 1;
     $.ajax({
         url: HOST_NAME+'/v1/comment',
         type: 'GET',
@@ -77,10 +78,9 @@ function getComments(id){
         dataType: 'json',
         timeout: 5000,
     })
-    .done(function(result,textStatus,jqXHR) {    
+    .done(function(result,textStatus,jqXHR) {
         var numberOfComments = result["total"];
         var comments = result['data'];
-        commentPage = commentPage + 1;
         $.each(comments,function(index,value){
             if(!typeof(result[index])) return false;
             if(myPenName == value['pen_name']){
