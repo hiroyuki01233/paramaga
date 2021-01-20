@@ -81,7 +81,6 @@ function getComments(id){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
-        console.log(result.data.length);
         if(result.data.length == 0) commentNoneFlg = true;
         var numberOfComments = result["total"];
         var comments = result['data'];
