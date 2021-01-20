@@ -2,6 +2,8 @@ var images;
 var commentPage = 1;
 var mangaPage = 1;
 var imageAll;
+var commentNoneFlg;
+
 function checkLogin() {
     if(!myPenName){
         location.href=HOST_NAME+"/login";
@@ -79,6 +81,8 @@ function getComments(id){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
+        console.log(result.data.length);
+        if(result.data.length == 0) commentNoneFlg = true;
         var numberOfComments = result["total"];
         var comments = result['data'];
         $.each(comments,function(index,value){
@@ -100,7 +104,7 @@ $(window).on('scroll', function () {
     var doch = $(document).innerHeight(); //ページ全体の高さ
     var winh = $(window).innerHeight(); //ウィンドウの高さ
     var bottom = doch - winh; //ページ全体の高さ - ウィンドウの高さ = ページの最下部位置
-    if (bottom <= $(window).scrollTop()) {
+    if (bottom <= $(window).scrollTop() && !commentNoneFlg) {
         getComments(commentPage);
     }
 });
