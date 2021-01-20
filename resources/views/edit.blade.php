@@ -61,7 +61,7 @@
                     <input type="button" style="background-color: red" value="red" onclick="buttonClick(this.value)">
                     <input type="button" style="background-color: blue" value="blue" onclick="buttonClick(this.value)">
                     <input type="button" style="background-color: yellow" value="yellow" onclick="buttonClick(this.value)">
-                    <input type="range" id="volume" value="0" min="0" max="150">
+                    <input type="range" id="volume" value="0" min="0" max="1000">
                     <input type="button" style="background-color: #808080" value="でかい" onclick="bigLine()">
 
                     <a href="#modal" onclick="saveNow()">保存</a>
