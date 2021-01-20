@@ -110,4 +110,9 @@ class IndexController extends Controller
 
     }
 
+    public function article($id){
+        if(!$id) return \App::abort(404);
+        return view("articles/".$id);
+    }
+
 }

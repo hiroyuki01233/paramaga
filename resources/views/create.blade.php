@@ -35,6 +35,16 @@
             #change_canvas_buttons{
                 display: inline-block;
             }
+            .manga_btn {
+                border: 2px solid #4072B3;
+                border-radius: 5px;
+            }
+            .change_buttons {
+                padding-bottom: 1%;
+                padding-top: 1%;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
         </style>
     </head>
     <body class="font-sans antialiased">
@@ -61,10 +71,13 @@
                 </div>
                 <br>
                 <canvas id="canvas" width="1280" height="720" style="background-color:white;"></canvas> <br>
-                <div id="change_canvas_buttons">
-                    <input type="button" value="1" onclick="changeCanvas(this.value,window.location.hash.slice(1))">
+                <div class="change_buttons">
+                    <div id="change_canvas_buttons">
+                        <input class="manga_btn" type="button" value=" 1 " onclick="changeCanvas(this.value,window.location.hash.slice(1))">
+                    </div>
+                    <br>
+                    <input class="manga_btn" style="margin-top: 1%" id="plus_button" type="button" value="  +  " onclick="canvasPlus(window.location.hash.slice(1))">
                 </div>
-                <input id="plus_button" type="button" value="+" onclick="canvasPlus(window.location.hash.slice(1))">
             </main>
         </div>
         <script src="{{ asset('/js/paint.js') }}"></script>

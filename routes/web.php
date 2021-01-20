@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/','App\Http\Controllers\IndexController@index');
 
+Route::get('/article/{id}', 'App\Http\Controllers\IndexController@article');
 Route::get('/view/{name}', 'App\Http\Controllers\IndexController@view');
 Route::get('/preview/{name}', 'App\Http\Controllers\IndexController@preview');
 Route::get('/v1/image/publicMangaByFlameNumber', 'App\Http\Controllers\ImageController@publicMangaByFlameNumber');

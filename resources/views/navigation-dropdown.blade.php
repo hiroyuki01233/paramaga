@@ -19,6 +19,11 @@
                         </div>
                     @endauth
                 @endif
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="/article/1" :active="request()->routeIs('dashboard')">
+                        作り方
+                    </x-jet-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
