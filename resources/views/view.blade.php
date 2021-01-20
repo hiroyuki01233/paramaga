@@ -69,6 +69,9 @@
                 border-bottom: 1px solid;
                 margin-bottom: 3%;
             }
+            .like_btn {
+                font-size: 30px;
+            }
         </style>
 
         <!-- Scripts -->
@@ -95,9 +98,9 @@
                         <span>{{ "@" }}{{ $manga["pen_name"] }}</span>
                         <span>作品 : {{ $manga["title"] }}</span>
                         @if($liked)
-                            <input id="like_btn" type="button" value="いいね取り消し" class="like_btn" onclick="changeLike()">
+                            <input id="like_btn" type="button" value="❤️" class="like_btn" onclick="changeLike()">
                         @else
-                            <input id="like_btn" type="button" value="いいね" class="like_btn" onclick="changeLike()">
+                            <input id="like_btn" type="button" value="♡" class="like_btn" onclick="changeLike()">
                         @endif
                         <div class="add_comment">
                             <input type="textarea" id="comment_text" name="comment" value="" class="textarea">

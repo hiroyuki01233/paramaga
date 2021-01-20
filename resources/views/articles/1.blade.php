@@ -36,6 +36,9 @@
             .margin {
                 margin-top: 5%;
             }
+            .detailed {
+                margin-left: 4%;
+            }
         </style>
     </head>
     <body class="font-sans antialiased">
@@ -48,9 +51,11 @@
                     </h1>
                     <h2 class="margin">まずは自分の漫画リストにいきましょう</h2>
                     <img class="margin" src="/storage/article_1_1.png" alt="リストボタンの場所">
-                    <h3>この画像の「リスト」ボタンを押してね！</h3>
+                    <h3>この画像の「リスト」ボタンを押してね！↑</h3>
+                    <p class="detailed"><a href="/" style="color: rgb(115, 193, 219);">一番最初のページ</a>の左上に同じようなものがあるよ ※ログインした状態で表示されます</p>
                     <img width="300" height="200" src="/storage/article_1_2.png" alt="プラスボタン">
-                    <h3>このプラスボタンを押すことで新しいパラパラ漫画を作成できるよ！</h3>
+                    <h3>このプラスボタンを押すことで新しいパラパラ漫画を作成できるよ！↑</h3>
+                    <p class="detailed">最大十個まで漫画を作成できます。</p>
                 </div>
             </main>
         </div>

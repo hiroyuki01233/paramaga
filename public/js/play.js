@@ -163,7 +163,7 @@ function addLike(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
-        $('#like_btn').val('いいね取り消し');
+        $('#like_btn').val('❤️');
         liked = 1;
     })
     .fail(function(data1,textStatus,jqXHR) {
@@ -183,7 +183,7 @@ function deleteLike(){
         timeout: 5000,
     })
     .done(function(result,textStatus,jqXHR) {
-        $('#like_btn').val('いいね');
+        $('#like_btn').val('♡');
         liked = 0;
     })
     .fail(function(data1,textStatus,jqXHR) {
