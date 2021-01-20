@@ -196,6 +196,15 @@ function saveImages(){
     }
 };
 
+function copyPage(){
+    image = images[(Number(window.location.hash.slice(1)))-1];
+    var img = new Image();
+    img.src = image;
+    img.onload = function(){
+        con.drawImage(img, 0, 0, 1280, 720);
+    }
+}
+
 function canvasPlus(){
     var newImageNumber = Object.keys(images).length+1;
     $('#change_canvas_buttons').append('<input class="manga_btn" type="button" value="'+newImageNumber+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');

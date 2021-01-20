@@ -150,11 +150,11 @@
                                 <input type="button" value="削除" onclick="deleteManga()">
                             </div>
                             @if($manga["published_flag"])
-                                <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }} ?m={{ $manga['url'] }}'">
+                                <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m={{ $manga['url'] }}'">
                                     <img id="manga_{{ $manga["number_of_works"] }}" src="/storage/loading.jpeg" width="300px">
                                 </button>
                             @else
-                                <button type="button" onclick="location.href='preview/ {{ $manga['pen_name'] }}?m={{ $manga['url'] }}'">
+                                <button type="button" onclick="location.href='preview/{{ $manga['pen_name'] }}?m={{ $manga['url'] }}'">
                                     <img id="manga_{{ $manga["number_of_works"] }}" src="/storage/loading.jpeg" width="300px">
                                 </button>
                             @endif

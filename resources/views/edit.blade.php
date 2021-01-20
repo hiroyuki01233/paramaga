@@ -65,6 +65,7 @@
                     <input type="button" style="background-color: yellow" value="yellow" onclick="buttonClick(this.value)">
                     <input type="range" id="volume" value="0" min="0" max="1000">
                     <input type="button" style="background-color: #808080" value="でかい" onclick="bigLine()">
+                    <input type="button" style="" value="前のページをコピー" onclick="copyPage()">
 
                     <a href="#modal" onclick="saveNow()">保存</a>
                     <div class="remodal" data-remodal-id="modal">
