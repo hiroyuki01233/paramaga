@@ -89,7 +89,7 @@
                 @foreach ($userManga as $manga)
                 <div class="main_div">
                     <div class="manga">
-                        <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m= {{ $manga['url'] }}'">
+                        <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m={{ $manga['url'] }}'">
                             <img id="{{ "image_".$manga['pen_name']."_".$manga['url'] }}" src="/storage/loading.jpeg" width="800px" >
                         </button>
                         <br>
