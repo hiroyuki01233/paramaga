@@ -50,6 +50,41 @@
                 padding-left: 5%;
                 padding-right: 5%;
             }
+            .color_btn {
+                width:50px;
+                height:50px;
+                background:gold;
+                border-radius:100%;
+            }
+            .color_buttons {
+                margin-bottom: 1%;
+            }
+            .input-range[type="range"] {
+                -webkit-appearance: none;
+                appearance: none;
+                background-color: #c7c7c7;
+                height: 2px;
+                width: 10%;
+
+                &:focus,
+                &:active {
+                    outline: none;
+                }
+
+                &::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    cursor: pointer;
+                    position: relative;
+                    border: none;
+                    width: 12px;
+                    height: 12px;
+                    display: block;
+                    background-color: #262626;
+                    border-radius: 50%;
+                    -webkit-border-radius: 50%;
+                }
+            }
         </style>
     </head>
     <body class="font-sans antialiased">
@@ -58,13 +93,15 @@
             <main align="center">
                 <br>
                 <div>
-                    <input type="button" style="background-color: white" value="white" onclick="buttonClick(this.value)">
-                    <input type="button" style="background-color: black" value="black" onclick="buttonClick(this.value)">
-                    <input type="button" style="background-color: red" value="red" onclick="buttonClick(this.value)">
-                    <input type="button" style="background-color: blue" value="blue" onclick="buttonClick(this.value)">
-                    <input type="button" style="background-color: yellow" value="yellow" onclick="buttonClick(this.value)">
-                    <input type="range" id="size" value="0" min="0" max="1000">
-                    <input type="button" style="background-color: #808080" value="でかい" onclick="bigLine()">
+                    <div class="color_buttons">
+                        <input type="button" class="color_btn" style="background-color: white" value="" onclick="buttonClick('white')">
+                        <input type="button" class="color_btn" style="background-color: black" value="" onclick="buttonClick('black')">
+                        <input type="button" class="color_btn" style="background-color: red" value="" onclick="buttonClick('red')">
+                        <input type="button" class="color_btn" style="background-color: blue" value="" onclick="buttonClick('blue')">
+                        <input type="button" class="color_btn" style="background-color: yellow" value="" onclick="buttonClick('yellow')">
+                    </div>
+                    <span>細い </span><input class="input-range" type="range" id="size" value="0" min="10" max="50"><span> 太い</span>
+                    <input type="checkbox" name="big_check_box" value="3">
                     <input type="button" class="top_btn" value="前のページをコピー" onclick="copyPage()">
                     <input type="button" class="top_btn" value="このページを削除" onclick="deletePage()">
 

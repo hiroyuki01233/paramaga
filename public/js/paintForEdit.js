@@ -23,11 +23,24 @@ var changedImages = [];
 var postImages = {};
 var mangaPage = 1;
 
+$(function(){
+    $('[name="big_check_box"]').change(function(){
+        var aryCmp = [];
+        var checkedFlg = false;
+        $('[name="big_check_box"]:checked').each(function(index, element){
+            checkedFlg = true;
+            gWidth = 100;
+        });
+        if(checkedFlg) return true;
+        gWidth = $("#size").val();
+    });
+});
 
 var size = document.getElementById('size');
 
 size.addEventListener('change', function () {
-  gWidth = size.value.length*10;
+    console.log($("#size").val());
+    gWidth = $("#size").val();
 }, false);
 
 function setCSRF(){
@@ -118,16 +131,8 @@ function startDraw(e){
 }
 
 function buttonClick(color){
-    console.log(changedImages);
     gColor = color;
-    console.log(color);
 }
-
-var volume = document.getElementById('size');
-
-volume.addEventListener('change', function () {
-  gWidth = volume.value.length*3;
-}, false);
 
 function bigLine(){
     gWidth = 100;
