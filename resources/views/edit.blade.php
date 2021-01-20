@@ -63,9 +63,10 @@
                     <input type="button" style="background-color: red" value="red" onclick="buttonClick(this.value)">
                     <input type="button" style="background-color: blue" value="blue" onclick="buttonClick(this.value)">
                     <input type="button" style="background-color: yellow" value="yellow" onclick="buttonClick(this.value)">
-                    <input type="range" id="volume" value="0" min="0" max="1000">
+                    <input type="range" id="size" value="0" min="0" max="1000">
                     <input type="button" style="background-color: #808080" value="でかい" onclick="bigLine()">
-                    <input type="button" style="" value="前のページをコピー" onclick="copyPage()">
+                    <input type="button" class="top_btn" value="前のページをコピー" onclick="copyPage()">
+                    <input type="button" class="top_btn" value="このページを削除" onclick="deletePage()">
 
                     <a href="#modal" onclick="saveNow()">保存</a>
                     <div class="remodal" data-remodal-id="modal">
@@ -78,8 +79,8 @@
                 <br>
                 <canvas id="canvas" width="1280" height="720" style="background-color:white;"></canvas> <br>
                 <div class="change_buttons">
+                    <input id ="1" class="manga_btn" style="background-color: yellow" type="button" value="1" onclick="changeCanvas(this.value,window.location.hash.slice(1))">
                     <div id="change_canvas_buttons">
-                        <input class="manga_btn" type="button" value="1" onclick="changeCanvas(this.value,window.location.hash.slice(1))">
                     </div><br>
                     <input class="manga_btn" style="margin-top: 1%" id="plus_button" type="button" value="+" onclick="canvasPlus(window.location.hash.slice(1))">
                 </div>
