@@ -221,6 +221,7 @@ class ImageController extends Controller
         }
 
         Comment::where("url",$image[0]["url"])->delete();
+        Like::where("url",$image[0]["url"])->delete();
 
         Manga::where('user_id',Auth::user()->id)->where('number_of_works',$image[0]["number_of_works"])->delete();
 
