@@ -12,6 +12,10 @@ Route::Resource('/v1/comment', 'App\Http\Controllers\CommentController',['only' 
 Route::Resource('/v1/like', 'App\Http\Controllers\LikeController',['only' => ['store', 'destroy']]);
 Route::get('/v1/image/thumbnailPub','App\Http\Controllers\ImageController@thumbnailPublic');
 Route::get('/info', 'App\Http\Controllers\IndexController@info');
+Route::get('/form', function () {
+    return view('form');
+});
+Route::POST('/form', 'App\Http\Controllers\IndexController@form');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/manga', 'App\Http\Controllers\MangaController@index');

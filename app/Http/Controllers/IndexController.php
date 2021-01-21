@@ -118,4 +118,36 @@ class IndexController extends Controller
         return view("articles/".$id);
     }
 
+    public function form(Request $request){
+
+        $validator = $request->validate([     
+            'name' => 'required|max:100',
+            'email' => 'max:50',
+            'content' => 'required|min:8|max:1800',
+        ]);
+
+        //処理内容を定義
+        function send_to_slack($message) {
+            $webhook_url = 'https://discord.com/api/webhooks/801674454010691604/Z8Vl8Sk8Rijq8pdQSFQuaYiS2Svca91nDV4JV7XwuFMfnN_vHRyMKZ1em7yIi13GIaIQ';
+            $options = array(
+                'http' => array(
+                    'method' => 'POST',
+                    'header' => 'Content-Type: application/json',
+                    'content' => json_encode($message),
+                )
+            );
+            $response = file_get_contents($webhook_url, false, stream_context_create($options)); //要求を$webhook_urlのURLに投げて結果を受け取る
+            return $response === 'ok'; //$responseの値がokならtrueを返す
+        }
+        
+        $message = array(
+            'username' => "ボット-あきこ",
+            'content' => "name : ".$request->input("name")."\nemail : ".$request->input("email")."\n内容 : ".$request->input("content")
+        );
+        
+        $completeFlg = send_to_slack($message); //処理を実行
+        $okFlg = true;
+        return view("form",compact("okFlg"));
+    }
+
 }

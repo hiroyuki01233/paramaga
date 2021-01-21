@@ -176,6 +176,7 @@
                     </button>
                 </div>
             </main>
+            @livewire('footer')
         </div>
 
     </body>

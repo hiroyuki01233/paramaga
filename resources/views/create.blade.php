@@ -124,6 +124,7 @@
                     <input class="manga_btn" style="margin-top: 1%" id="plus_button" type="button" value="+" onclick="canvasPlus(window.location.hash.slice(1))">
                 </div>
             </main>
+            @livewire('footer')
         </div>
         <script src="{{ asset('/js/paint.js') }}"></script>
     </body>

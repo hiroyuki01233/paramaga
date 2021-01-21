@@ -58,6 +58,7 @@
                     <p class="detailed">最大十個まで漫画を作成できます。</p>
                 </div>
             </main>
+            @livewire('footer')
         </div>
     </body>
 </html>

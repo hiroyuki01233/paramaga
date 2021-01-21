@@ -105,6 +105,7 @@
                 </div>
                 @endforeach
             </main>
+            @livewire('footer')
         </div>
     </body>
 </html>
