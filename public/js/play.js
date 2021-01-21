@@ -13,6 +13,7 @@ function checkLogin() {
 
 var max = 1;
 function getManga(page){
+    $("#load").text("loading now...");
     setCSRF();
     $.ajax({
         url: HOST_NAME+'/v1/image/publicMangaByFlameNumber',
@@ -26,6 +27,7 @@ function getManga(page){
     })
     .done(function(result,textStatus,jqXHR) {  
         imageAll = result["imageAll"];
+        $("#load").text("");
         max = Math.ceil(imageAll / 50)+1;
         if(page >= 2){
             Object.assign(images, result);
