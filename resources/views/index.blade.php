@@ -57,27 +57,24 @@
 
                 const userManga = @json($userManga);                
 
-                $.each(userManga, function(index, value){
-                    $.ajax({
+                $.ajax({
                         url: '{{config('const.HOST_NAME')}}/v1/image/thumbnailPub',
                         type: 'GET',
                         dataType: 'json',
                         data: { 
-                            "url": value["url"],
+                            "url": userManga,
                         },
                         timeout: 5000,
                     })
                     .done(function(data1,textStatus,jqXHR) {
-                        var data2 = JSON.stringify(data1);
-                        data2 = data2.slice(1);
-                        data2 = data2.slice(0, -1);
-                        document.getElementById("image_" + value["pen_name"] + "_" + value["url"]).src = data2
+                        $.each(data1, function(index, value){
+                            document.getElementById("image_" + index).src = value["image"];
+                        })
                     })
                     .fail(function(data1,textStatus,jqXHR) {
                         var data2 = JSON.stringify(data1);
                         console.log(data2);
                     });
-                })
             };    
         </script>
 
@@ -90,7 +87,7 @@
                 <div class="main_div">
                     <div class="manga">
                         <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m={{ $manga['url'] }}'">
-                            <img id="{{ "image_".$manga['pen_name']."_".$manga['url'] }}" src="/storage/loading.jpeg" width="800px" >
+                            <img id="{{ "image_".$manga['url'] }}" src="/storage/loading.jpeg" width="800px" >
                         </button>
                         <br>
                         @if ( $manga["profile_photo_path"] )

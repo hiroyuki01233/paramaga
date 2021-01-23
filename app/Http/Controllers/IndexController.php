@@ -104,12 +104,20 @@ class IndexController extends Controller
             ->where('pen_name', Auth::user()->pen_name)
             ->where("published_flag", 1)
             ->get();
+        $mangaUrls = Like::where("user_id",Auth::user()->id)->select("url")->get();
+        $likeAll = \DB::table('users')
+            ->select('manga.title','manga.url','users.pen_name','users.profile_photo_path','users.name')
+            ->join('manga', 'users.id', '=', 'manga.user_id')
+            ->whereIn('manga.url', $mangaUrls)
+            ->where("published_flag", 1)
+            ->get();
         $mangaList = [];
         foreach($mangaAll as $manga) $mangaList[] = $manga->url;
         $commentCount = Comment::whereIn("url",$mangaList)->count();
         $likeCount = Like::whereIn("url",$mangaList)->count();
         $mangaAll = json_decode(json_encode($mangaAll), true);
-        return view("user",compact("userInfo","commentCount","likeCount","mangaAll"));
+        $likeAll = json_decode(json_encode($likeAll), true);
+        return view("user",compact("userInfo","commentCount","likeCount","mangaAll","likeAll"));
 
     }
 

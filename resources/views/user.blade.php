@@ -39,7 +39,7 @@
                 margin-left: 8%;
             }
             .manga_all {
-                padding-top: 4%;
+                padding-top: 2%;
                 padding-left: 10%;
                 padding-right: 10%;
                 text-align: center;
@@ -49,6 +49,10 @@
                 border: 2px solid #4072B3;
                 border-radius: 5px;
                 margin: 1%;
+                text-align: center;
+            }
+            .select_btn {
+                margin-top: 2%;
                 text-align: center;
             }
         </style>
@@ -64,33 +68,54 @@
                 }
             });
         }
+        var mangaListFlg = true;
+        function changeList(){
+            $('#my_manga').fadeToggle();
+            $('#like_manga').fadeToggle();
+        }
 
         window.onload = function () {
             setCSRF();
 
-            const mangaAll = @json($mangaAll);                
-
-            $.each(mangaAll, function(index, value){
-                $.ajax({
+            const mangaAll = @json($mangaAll);
+            const likeAll = @json($likeAll);  
+            $.ajax({
                     url: '{{config('const.HOST_NAME')}}/v1/image/thumbnailPub',
                     type: 'GET',
                     dataType: 'json',
                     data: { 
-                        "url": value["url"],
+                        "url": mangaAll,
                     },
                     timeout: 5000,
                 })
                 .done(function(data1,textStatus,jqXHR) {
-                    var data2 = JSON.stringify(data1);
-                    data2 = data2.slice(1);
-                    data2 = data2.slice(0, -1);
-                    document.getElementById("image_" + value["pen_name"] + "_" + value["url"]).src = data2
+                    $.each(data1, function(index, value){
+                        document.getElementById("image_my_" + index).src = value["image"];
+                    })
                 })
                 .fail(function(data1,textStatus,jqXHR) {
                     var data2 = JSON.stringify(data1);
                     console.log(data2);
-                });
-            })
+            });
+
+            $.ajax({
+                    url: '{{config('const.HOST_NAME')}}/v1/image/thumbnailPub',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { 
+                        "url": likeAll,
+                    },
+                    timeout: 5000,
+                })
+                .done(function(data1,textStatus,jqXHR) {
+                    $.each(data1, function(index, value){
+                        document.getElementById("image_like_" + index).src = value["image"];
+                    })
+                })
+                .fail(function(data1,textStatus,jqXHR) {
+                    var data2 = JSON.stringify(data1);
+                    console.log(data2);
+            });
         };    
     </script>
     <body class="font-sans antialiased">
@@ -112,16 +137,33 @@
                         <p>いいね数 : {{ $likeCount }}</p>
                     </div>
                 </div>
+                <div class="select_btn">
+                    <button style="margin-right: 1%" onclick="changeList()"><span>リスト</span></button><button onclick="changeList()"><span>いいね</span></button>
+                </div>
                 <div class="manga_all">
-                    @foreach ($mangaAll as $manga)
-                        <div class="manga">
-                            <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m= {{ $manga['url'] }}'">
-                                <img id="{{ "image_".$manga['pen_name']."_".$manga['url'] }}" src="/storage/loading.jpeg" width="500px" >
-                            </button>
-                            <br>
-                            <span>作品 : {{ $manga["title"] }}</span>
-                        </div>
-                    @endforeach
+                    <div id="my_manga">
+                        @foreach ($mangaAll as $manga)
+                            <div class="manga">
+                                <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m= {{ $manga['url'] }}'">
+                                    <img id="{{ "image_my_".$manga['url'] }}" src="/storage/loading.jpeg" width="500px" >
+                                </button>
+                                <br>
+                                <span>作品 : {{ $manga["title"] }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div id="like_manga" style="display: none;">
+                        @foreach ($likeAll as $manga)
+                            <div class="manga">
+                                <button type="button" onclick="location.href='view/{{ $manga['pen_name'] }}?m= {{ $manga['url'] }}'">
+                                    <img id="{{ "image_like_".$manga['url'] }}" src="/storage/loading.jpeg" width="500px" >
+                                </button>
+                                <br>
+                                <span>作品 : {{ $manga["title"] }}</span>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </main>
             @livewire('footer')

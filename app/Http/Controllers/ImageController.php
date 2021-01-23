@@ -230,16 +230,31 @@ class ImageController extends Controller
 
     public function thumbnailPublic(Request $request)
     {
+        $requestAll = $request->all();
+        if(count($requestAll["url"]) > 50) return false;
+        foreach($requestAll["url"] as $image){
+            $imageURLs[] = $image["url"];
+        }
+        
         $filePath = \DB::table('users')
-            ->select('users.id','manga.number_of_works')
+            ->select('users.id','manga.number_of_works','manga.url','users.pen_name','users.name')
             ->join('manga', 'users.id', '=', 'manga.user_id')
-            ->where('manga.url',$request->url)
+            ->whereIn('manga.url', $imageURLs)
             ->where('published_flag', 1)
             ->get()->toArray();
-        $filePath = json_decode(json_encode($filePath), true);
-        $base64data = base64_encode(Storage::get("private/image/".$filePath[0]['id']."/".$filePath[0]['number_of_works']."/1.jpeg"));
-
-        return json_encode("data:image/jpeg;base64,".$base64data);
+        
+        $images = [];
+        foreach($filePath as $path){
+            if(Storage::exists('private/image/'.$path->id."/".$path->number_of_works."/1.jpeg")){
+                $images[$path->url] = [
+                    "name" => $path->name,
+                    "pen_name" => $path->pen_name,
+                    "url" => $path->url,
+                    "image" => "data:image/jpeg;base64,".base64_encode(Storage::get('private/image/'.$path->id."/".$path->number_of_works."/1.jpeg")),
+                ];
+            }
+        }
+        return json_encode($images);
     }
 
     public function myMangaThumbnaiAll(Request $request)
