@@ -26,7 +26,7 @@
             const url = @json($manga["url"]);
             var myPenName = @json($myPenName);
             var liked = @json($liked);
-            const profileUrl = @json(Auth::user()->profile_photo_url);
+            const profileUrl = @json( $test = !empty(Auth::user()->profile_photo_url) ? Auth::user()->profile_photo_url : "");
             const HOST_NAME = "{{config('const.HOST_NAME')}}";
         </script>
         <style>
