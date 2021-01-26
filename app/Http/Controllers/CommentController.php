@@ -17,7 +17,7 @@ class CommentController extends Controller
     public function index(Request $request)
     {
         $comments = \DB::table('users')
-            ->select('comments.id','comments.pen_name','comments.comment','users.profile_photo_path')
+            ->select('comments.id','users.pen_name','comments.comment','users.profile_photo_path')
             ->join('comments', 'users.id', '=', 'comments.user_id')
             ->where('comments.url', $request->url)
             ->orderBy('comments.id', 'desc')
