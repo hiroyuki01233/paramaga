@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Manga;
+use App\Models\Like;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
