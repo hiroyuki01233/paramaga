@@ -16,8 +16,13 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        $comments = Comment::where("url",$request->url)->select("id","pen_name","comment")->orderBy('id', 'desc')->paginate(50);
-
+        $comments = \DB::table('users')
+            ->select('comments.id','comments.pen_name','comments.comment','users.profile_photo_path')
+            ->join('comments', 'users.id', '=', 'comments.user_id')
+            ->where('comments.url', $request->url)
+            ->orderBy('comments.id', 'desc')
+            ->paginate(50);
+        // $comments = Comment::where("url",$request->url)->select("id","pen_name","comment")->orderBy('id', 'desc')->paginate(50);
         return $comments;
     }
 
@@ -48,7 +53,7 @@ class CommentController extends Controller
             $comment->pen_name = Auth::user()->pen_name;
             $comment->comment = $request->comment;
             $comment->save();
-            return true;
+            return $comment->id;
         }
     }
 

@@ -26,6 +26,7 @@
             const url = @json($manga["url"]);
             var myPenName = @json($myPenName);
             var liked = @json($liked);
+            const profileUrl = @json(Auth::user()->profile_photo_url);
             const HOST_NAME = "{{config('const.HOST_NAME')}}";
         </script>
         <style>
@@ -48,8 +49,9 @@
                 margin-top: 1%;
             }
             .comment {
-                margin-left: 2%;
-                word-wrap: break-word;
+                /* margin-left: 10%; */
+                /* padding-left: 10%; */
+                /* word-wrap: break-word; */
                 /* display: inline; */
             }
             .add_comment_btn {
@@ -71,6 +73,14 @@
             }
             .like_btn {
                 font-size: 30px;
+            }
+            .box {
+                display: inline-block;
+            }
+            .profile_image {
+                margin-right: 1%;
+                position: relative;
+                bottom: 15px;
             }
         </style>
 

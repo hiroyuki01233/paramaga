@@ -88,10 +88,11 @@ function getComments(id){
         var comments = result['data'];
         $.each(comments,function(index,value){
             if(!typeof(result[index])) return false;
+            var url = value["profile_photo_path"] ? "/storage/"+value["profile_photo_path"] : "/storage/UserIcon.png";
             if(myPenName == value['pen_name']){
-                $('#comments').append('<div class="user_comment" id="'+value['id']+'"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p><input type="button" class="delete_btn" value="削除" onclick="deleteComment('+value['id']+')"></div>');
+                $('#comments').append('<div class="user_comment" id="'+value['id']+'"> <div class="box profile_image"> <a href="/profile?u='+value['pen_name']+'"><img class="h-10 w-10 rounded-full object-cover" src="'+url+'" alt="'+value['pen_name']+'" /></a> </div> <div class="box"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p></div><input type="button" class="delete_btn" value="削除" onclick="deleteComment('+value['id']+')"></div>');
             }else{
-                $('#comments').append('<div class="user_comment" id="'+value['id']+'"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p></div>');
+                $('#comments').append('<div class="user_comment" id="'+value['id']+'"> <div class="box profile_image"> <a href="/profile?u='+value['pen_name']+'"><img class="h-10 w-10 rounded-full object-cover" src="'+url+'" alt="'+value['pen_name']+'" /></a> </div> <div class="box"><p>'+value['pen_name']+'</p>'+'<p class="comment">'+value['comment']+'</p></div></div>');
             }
         })
     })
@@ -146,7 +147,7 @@ function addComment(){
     .done(function(result,textStatus,jqXHR) {
         $("#add_comment_btn").val("投稿");
         $('#comment_text').val("");
-        $('#comments').prepend('<div class="user_comment"><p>'+myPenName+'</p>'+'<p class="comment">'+comment+'</p></div><br>');
+        $('#comments').prepend('<div class="user_comment" id="'+result+'"> <div class="box profile_image"> <a href="/profile?u='+myPenName+'"><img class="h-10 w-10 rounded-full object-cover" src="'+profileUrl+'" alt="'+myPenName+'" /></a> </div> <div class="box"><p>'+myPenName+'</p>'+'<p class="comment">'+comment+'</p></div><input type="button" class="delete_btn" value="削除" onclick="deleteComment('+result+')"></div>');
     })
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
