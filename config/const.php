@@ -11,3 +11,9 @@ if (env('APP_ENV') == 'production') {
         'HOST_NAME' => "https://paramaga.com"
     ];
 }
+
+if (env('APP_ENV') == 'dev') {
+    return[
+        'HOST_NAME' => "https://192.168.3.17:34534"
+    ];
+}
