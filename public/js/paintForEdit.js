@@ -307,3 +307,25 @@ function changeCanvas(id,hash){
     $('#'+id).css('background-color', 'yellow');
     window.location.hash = id;
 }
+
+function play(){
+    var image = canvas.toDataURL('image/jpeg', 1);
+    images[Number(window.location.hash.slice(1))] = image;
+    var count = 1;
+    var playScreen = function(){
+        var img = new Image();
+        img.src = images[count];
+        img.onload = function(){
+            con.drawImage(img, 0, 0, 1280, 720);
+        }
+        $('#'+(count - 1)).css('background-color', 'transparent');
+        $('#'+count).css('background-color', 'yellow');
+        // $("#flame").html(count);
+        var id = setTimeout(playScreen, 100);
+        if(typeof images[count + 1] == 'undefined'){
+            clearTimeout(id);
+        }
+        count++;
+    }
+    playScreen();
+}
