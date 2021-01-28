@@ -50,7 +50,6 @@ class CommentController extends Controller
             $comment = new Comment;
             $comment->user_id = Auth::user()->id;
             $comment->url = $request->url;
-            $comment->pen_name = Auth::user()->pen_name;
             $comment->comment = $request->comment;
             $comment->save();
             return $comment->id;
