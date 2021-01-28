@@ -114,6 +114,7 @@
                     <input type="checkbox" name="big_check_box" value="3">
                     <input type="button" class="top_btn" value="前のページをコピー" onclick="copyPage()">
                     <input type="button" class="top_btn" value="このページを削除" onclick="deletePage()">
+                    <input type="button" class="top_btn" value="再生" onclick="play()">
 
                     <a href="#modal" onclick="saveNow()">保存</a>
                     <div class="remodal" data-remodal-id="modal">
