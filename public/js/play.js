@@ -124,6 +124,7 @@ function deleteComment(id){
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
         console.log(data2);
+        $('#like_btn').val('通信失敗');
     });
 }
 
@@ -152,6 +153,7 @@ function addComment(){
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
         console.log(data2);
+        window.location.href = '/email/verify';
     });
 }
 
@@ -175,6 +177,7 @@ function addLike(){
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
         console.log(data2);
+        window.location.href = '/email/verify';
     });
 }
 
@@ -194,6 +197,7 @@ function deleteLike(){
     })
     .fail(function(data1,textStatus,jqXHR) {
         var data2 = JSON.stringify(data1);
+        $('#like_btn').val('通信失敗');
         console.log(data2);
     });
 }

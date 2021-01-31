@@ -44,7 +44,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Auth::user()) return "plz login";
+        if(!Auth::user() || !Auth::user()->email_verified_at) return "plz login";
         $requestAll = $request->all();
         if(Manga::where('url',$request->url)->where("published_flag", 1)->exists()){
             $comment = new Comment;

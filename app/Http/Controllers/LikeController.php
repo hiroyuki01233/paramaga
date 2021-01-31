@@ -38,7 +38,7 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Auth::user()) return "plz login";
+        if(!Auth::user() || !Auth::user()->email_verified_at) return "plz login";
         if(Manga::where('url',$request->url)->where("published_flag", 1)->exists()){
             $like = new Like;
             $like->user_id = Auth::user()->id;

@@ -27,7 +27,7 @@ class IndexController extends Controller
 
     public function info()
     {
-        if(!Auth::user() || Auth::user()->pen_name !== "ChobiSun00") return \App::abort(404);
+        if(!Auth::user() || Auth::user()->id !== "1") return \App::abort(404);
         // $userManga = \DB::table('users')
         //     ->select('manga.title','manga.url','users.pen_name','users.profile_photo_path','users.email')
         //     ->join('manga', 'users.id', '=', 'manga.user_id')
@@ -35,7 +35,9 @@ class IndexController extends Controller
         //     ->orderBy('manga.id', 'desc')
         //     ->get()->toArray();
         // $userManga = json_decode(json_encode($userManga), true);
-        $userAll = User::select('email','name')->get();
+        // dump(Auth::user()->email_verified_at);
+        // if(Auth::user()->email_verified_at) dd("test");
+        $userAll = User::select('email','name','email_verified_at')->get();
         // print($userAll);
         foreach($userAll as $user){
             print($user);
