@@ -31,7 +31,7 @@ window.onload = function() {
     canvas.addEventListener('mousemove', Draw, false);
     canvas.addEventListener('mouseup', endDraw, false);
 
-    page = "1" ;
+    page = 1;
 
     var image = canvas.toDataURL('image/jpeg', 0.5);
     images["1"] = image;

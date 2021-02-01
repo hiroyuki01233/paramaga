@@ -22,6 +22,7 @@ var images = {};
 var changedImages = [];
 var postImages = {};
 var mangaPage = 1;
+var page;
 
 $(function(){
     $('[name="big_check_box"]').change(function(){
@@ -58,7 +59,7 @@ function createBtn(){
     $.each(images,function(index,value){
         if(!typeof(images[index])) return false;
         if(index == 1) return true;
-        $('#change_canvas_buttons').append('<input id="'+index+'" class="manga_btn" type="button" value="'+(index)+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+        $('#change_canvas_buttons').append('<input id="'+index+'" class="manga_btn" type="button" value="'+(index)+'" onclick="changeCanvas(this.value)">');
         if(index == 200) $("#plus_button").remove();
     })
     var img = new Image();
@@ -108,7 +109,7 @@ $(document).ready( function(){
     canvas.addEventListener('mousemove', Draw, false);
     canvas.addEventListener('mouseup', endDraw, false);
 
-    window.location.hash = "1" ;
+    page = 1;
 
     var image = canvas.toDataURL('image/jpeg', 0.5);
     getManga(mangaPage);
@@ -168,10 +169,8 @@ function Draw(e){
 
 // 描画終了
 function endDraw(){
-    
     flgDraw = false;
-    if(changedImages.indexOf(window.location.hash.slice(1)) == -1) changedImages.push(window.location.hash.slice(1));
-
+    if(changedImages.indexOf(page) == -1) changedImages.push(page);
 }
 
 function saveCanvas()
@@ -189,8 +188,7 @@ function saveCanvas()
 
 function saveNow(){
     var image = canvas.toDataURL('image/jpeg', 1);
-    var hash = window.location.hash.slice(1);
-    images[hash] = image;
+    images[page] = image;
 }
 
 function saveImages(){
@@ -223,8 +221,8 @@ function saveImages(){
 };
 
 function copyPage(){
-    if((Number(window.location.hash.slice(1)) <= 1)) return true;
-    image = images[(Number(window.location.hash.slice(1)))-1];
+    if(page <= 1) return true;
+    image = images[page-1];
     var img = new Image();
     img.src = image;
     img.onload = function(){
@@ -233,7 +231,7 @@ function copyPage(){
 }
 
 function deletePage(){
-    var now = (Number(window.location.hash.slice(1)));
+    var now = page;
     if(now <= 1) return true;
     var changedNumber = 1;
     var nowIndex = 1;
@@ -252,14 +250,14 @@ function deletePage(){
         con.drawImage(img, 0, 0, 1280, 720);
     }
     $("#"+now).remove();
-    window.location.hash = changedNumber;
+    page = changedNumber;
     $('#'+changedNumber).css('background-color', 'yellow');
 }
 
 
 function canvasPlus(){
     $('#1').css('background-color', 'transparent');
-    var now = (Number(window.location.hash.slice(1)));
+    var now = page;
     // var newImageNumber = now+1;
     // if(typeof images[newImageNumber] !== "undefined") return true;
     startNumber = now;
@@ -275,7 +273,7 @@ function canvasPlus(){
     con.fillStyle = 'rgb(255,255,255)';
     con.fillRect(0, 0, 1280, 720);
     images[newImageNumber] = canvas.toDataURL('image/jpeg', 1);
-    window.location.hash = newImageNumber;
+    page = newImageNumber;
     if(newImageNumber == 200) {
         $("#plus_button").remove();
     }
@@ -283,17 +281,17 @@ function canvasPlus(){
     $.each(images, function(index, value){
         if(index == 1) return true;
         if(index == newImageNumber){
-            $('#change_canvas_buttons').append('<input class="manga_btn" style="background-color: yellow" id="'+index+'" type="button" value="'+index+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+            $('#change_canvas_buttons').append('<input class="manga_btn" style="background-color: yellow" id="'+index+'" type="button" value="'+index+'" onclick="changeCanvas(this.value)">');
         }else{
-            $('#change_canvas_buttons').append('<input class="manga_btn" id="'+index+'" type="button" value="'+index+'" onclick="changeCanvas(this.value,window.location.hash.slice(1))">');
+            $('#change_canvas_buttons').append('<input class="manga_btn" id="'+index+'" type="button" value="'+index+'" onclick="changeCanvas(this.value)">');
         }
     })
 }
 
-function changeCanvas(id,hash){
-    $('#'+hash).css('background-color', 'transparent');
+function changeCanvas(id){
+    $('#'+page).css('background-color', 'transparent');
     var image = canvas.toDataURL('image/jpeg', 1);
-    images[hash] = image;
+    images[page] = image;
     if(images[id]){
         var img = new Image();
         img.src = images[id];
@@ -305,12 +303,12 @@ function changeCanvas(id,hash){
         con.fillRect(0, 0, 1280, 720);
     }
     $('#'+id).css('background-color', 'yellow');
-    window.location.hash = id;
+    page = id;
 }
 
 function play(){
     var image = canvas.toDataURL('image/jpeg', 1);
-    images[Number(window.location.hash.slice(1))] = image;
+    images[page] = image;
     var count = 1;
     var playScreen = function(){
         var img = new Image();
