@@ -121,17 +121,18 @@
                         @else
                             <input id="like_btn" type="button" value="♡" class="like_btn" onclick="changeLike()">
                         @endif
-                        <div class="add_comment">
+                        {{-- <div class="add_comment">
                             <input type="textarea" id="comment_text" name="comment" value="" class="textarea">
                             <input id="add_comment_btn" type="button" value="投稿" class="add_comment_btn" onclick="addComment()">
-                        </div>
+                        </div> --}}
                         <span style="font-size: 20px">いいね数 : {{ $likeCount }}</span>
                     </div>
-                    <div class="commentCount user_comment">
+                    {{-- <div class="commentCount user_comment">
                         <p>コメント数 : {{ $commentCount }}</p>
                     </div>
                     <div id="comments">
-                    </div>
+                    </div> --}}
+                    {{-- <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ビッグパンプまじで儲かるなこれ。<br>運営いつ捕まんのかな</p>&mdash; チョビさん🇯🇵 - 東海オンエアファン (@ChobiSun00) <a href="https://twitter.com/ChobiSun00/status/1357101771437400065?ref_src=twsrc%5Etfw">February 3, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> --}}
                 </div>
             </main>
             @livewire('footer')

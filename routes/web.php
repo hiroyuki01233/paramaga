@@ -11,7 +11,7 @@ Route::get('/article/{id}', 'App\Http\Controllers\IndexController@article');
 Route::get('/view/{name}', 'App\Http\Controllers\IndexController@view');
 Route::get('/preview/{name}', 'App\Http\Controllers\IndexController@preview');
 Route::get('/v1/image/publicMangaByFlameNumber', 'App\Http\Controllers\ImageController@publicMangaByFlameNumber');
-Route::Resource('/v1/comment', 'App\Http\Controllers\CommentController',['only' => ['index', 'store', 'destroy']]);
+// Route::Resource('/v1/comment', 'App\Http\Controllers\CommentController',['only' => ['index', 'store', 'destroy']]);
 Route::Resource('/v1/like', 'App\Http\Controllers\LikeController',['only' => ['store', 'destroy']]);
 Route::get('/v1/image/thumbnailPub','App\Http\Controllers\ImageController@thumbnailPublic');
 Route::get('/info', 'App\Http\Controllers\IndexController@info');
