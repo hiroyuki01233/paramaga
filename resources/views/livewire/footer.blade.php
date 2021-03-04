@@ -21,7 +21,7 @@
 
 </style>
 <footer class="footer">
-    <div class="service_name"><span class="center">Paramaga / パラマガ </span><span style="margin-left: auto; margin-right: 0px">v1.7</span></div>
+    <div class="service_name"><span class="center">Paramaga / パラマガ </span><span style="margin-left: auto; margin-right: 0px">v1.8</span></div>
     <div class="footer-menu">
         <a href="{{config('const.HOST_NAME')}}" style="color: rgb(115, 193, 219)">HOME</a> / 
         <a href="https://twitter.com/_paramaga_" target="_blank" rel="noopener noreferrer" style="color: rgb(115, 193, 219)">twitter : _paramaga_ </a> / 
