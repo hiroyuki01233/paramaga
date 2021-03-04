@@ -116,7 +116,7 @@
                     <input type="button" class="top_btn" value="このページを削除" onclick="deletePage()">
                     <input type="button" class="top_btn" value="再生" onclick="play()">
 
-                    <a href="#modal" onclick="saveNow()">保存</a>
+                    <a onclick="saveNow()">保存</a>
                     <div class="remodal" data-remodal-id="modal">
                         <input type="text" id="title" name="title" required minlength="4" maxlength="100" size="50" placeholder="タイトルを入力">
                         <button data-remodal-action="close" class="remodal-close"></button>

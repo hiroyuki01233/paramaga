@@ -130,6 +130,25 @@ function saveCanvas()
 function saveNow(){
     var image = canvas.toDataURL('image/jpeg', 1);
     images[page] = image;
+    lastPage = Object.keys(images).pop();
+    var nothingPages = [];
+    for(i = 1; i <= lastPage; i++){
+        if(typeof(images[i]) == "undefined"){
+            nothingPages.push(i);
+        }
+    }
+    console.log(nothingPages);
+    if(typeof nothingPages[0] !== 'undefined'){
+        var msg = "抜けているページがあります。このまま続行するとそれ以降のページが保存されません。実行しますか？ 不足ページ : "+nothingPages;
+        var res = confirm(msg);
+        if( res == true ) {
+            window.location.href = "#modal";
+        }
+        else {
+            alert("実行をキャンセルします");
+        }
+    }
+    window.location.href = "#modal";
 }
 
 function saveImages(){
