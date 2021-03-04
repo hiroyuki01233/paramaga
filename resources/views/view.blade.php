@@ -79,7 +79,7 @@
                         <span class="twitter_share_content">Twitterで共有!</span>
                         <div class="twitter_share_content">
                             <ul class="follow-me">
-                                <li><a href="https://twitter.com/intent/tweet?text=パラマガ！で作成したパラパラ漫画！題名 : {{ $manga["title"] }}&url={{config('const.HOST_NAME')}}/view/{{$manga["pen_name"]}}?m={{$manga["url"]}}"></a></li>
+                                <li><a href="https://twitter.com/intent/tweet?text=パラマガ！で作成したパラパラ漫画！題名 : {{ $manga["title"] }}&url={{config('const.HOST_NAME')}}/view/{{$manga["pen_name"]}}?m={{$manga["url"]}}" target="_blank"></a></li>
                             </ul>
                         </div>
                     </div>
