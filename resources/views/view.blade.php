@@ -27,6 +27,8 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal.min.js"></script>
         <link rel="shortcut icon" href="{{ asset('storage/icon.ico') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ asset('/css/view.css') }}">
 
         @livewireStyles
         <script src="{{ asset('/js/play.js') }}"></script>
@@ -38,62 +40,7 @@
             const profileUrl = @json( $test = !empty(Auth::user()->profile_photo_url) ? Auth::user()->profile_photo_url : "");
             const HOST_NAME = "{{config('const.HOST_NAME')}}";
         </script>
-        <style>
-            .images {
-                margin-top: 3%;
-                margin-bottom: 1%;
-                text-align: center;
-            }
-            .detail {
-                text-align: center;
-            }
-            .add_comment {
-                margin: 1%;
-                margin-bottom: 2%;
-            }
-            .user_comment {
-                margin-left: 13%;
-                margin-right: 13%;
-                padding-right: 7%;
-                margin-top: 1%;
-            }
-            .comment {
-                /* margin-left: 10%; */
-                /* padding-left: 10%; */
-                /* word-wrap: break-word; */
-                /* display: inline; */
-            }
-            .add_comment_btn {
-                margin-left: 2%;
-            }
-            .textarea {
-                width: 50%;
-                height: 2em;
-            }
-            .delete_btn {
-                /* margin: 0 0 0 auto;     */
-                margin-left: 100%;
-                margin-right: 10%;
-            }
-            .commentCount {
-                font-size: 20px;
-                border-bottom: 1px solid;
-                margin-bottom: 3%;
-            }
-            .like_btn {
-                font-size: 30px;
-            }
-            .box {
-                display: inline-block;
-            }
-            .profile_image {
-                margin-right: 1%;
-                position: relative;
-                bottom: 15px;
-            }
-        </style>
 
-        <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
@@ -127,6 +74,16 @@
                         </div> --}}
                         <span style="font-size: 20px">いいね数 : {{ $likeCount }}</span>
                     </div>
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+                    <div class="twitter_share_btn">
+                        <span class="twitter_share_content">Twitterで共有!</span>
+                        <div class="twitter_share_content">
+                            <ul class="follow-me">
+                                <li><a href="https://twitter.com/intent/tweet?text=パラマガ！で作成したパラパラ漫画！題名 : {{ $manga["title"] }}&url={{config('const.HOST_NAME')}}/view/{{$manga["pen_name"]}}?m={{$manga["url"]}}"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
                     {{-- <div class="commentCount user_comment">
                         <p>コメント数 : {{ $commentCount }}</p>
                     </div>
