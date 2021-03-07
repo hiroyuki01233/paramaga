@@ -102,6 +102,7 @@
             <main align="center">
                 <br>
                 <div>
+                    <p>題名 : {{ $mangaInfo["title"] }}</p>
                     <div class="color_buttons">
                         <input type="button" class="color_btn" style="background-color: white" value="" onclick="buttonClick('white')">
                         <input type="button" class="color_btn" style="background-color: black" value="" onclick="buttonClick('black')">
@@ -117,7 +118,7 @@
 
                     <a href="#modal" onclick="saveNow()">保存</a>
                     <div class="remodal" data-remodal-id="modal">
-                        <input type="text" id="title" name="title" required minlength="4" maxlength="100" size="50" placeholder="タイトルを入力">
+                        <input type="text" id="title" value="{{ $mangaInfo["title"] }}" name="title" required minlength="4" maxlength="100" size="50" placeholder="タイトルを入力">
                         <button data-remodal-action="close" class="remodal-close"></button>
                         <p id="test_text">保存しますか？</p>
                         <input type="button" value="保存" onclick="saveImages()">

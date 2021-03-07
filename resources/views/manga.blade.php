@@ -178,11 +178,13 @@
                         </div>
                     @endforeach
                     <br>
-                    <button type="button" onclick="location.href='/create'" width="300px">
-                        <div class="inline-block_test plus_button">
-                            +
-                        </div>
-                    </button>
+                    @if(count($mangaAll) < 10):
+                        <button type="button" onclick="location.href='/create'" width="300px">
+                            <div class="inline-block_test plus_button">
+                                +
+                            </div>
+                        </button>
+                    @endif
                 </div>
             </main>
             @livewire('footer')
