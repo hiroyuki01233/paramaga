@@ -30,6 +30,7 @@
     <script> 
             const id = {{$id}};
             const HOST_NAME = "{{config('const.HOST_NAME')}}";
+            const editPage = true;
     </script>
 
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.0.5/remodal.min.css">
@@ -135,6 +136,6 @@
             </main>
             @livewire('footer')
         </div>
-        <script src="{{ asset('/js/paintForEdit.js') }}"></script>
+        <script src="{{ asset('/js/paint.js') }}"></script>
     </body>
 </html>

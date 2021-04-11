@@ -19,10 +19,73 @@ con.fillRect(0, 0, 1280, 720);
 
 var nowImage = 0;
 var images = {};
-
+var changedImages = [];
+var postImages = {};
+var mangaPage = 1;
 var page;
 
-window.onload = function() {
+var nowCanvas = [];
+var nowCanvasNumber = 1;
+
+function setCSRF(){
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        if (!options.crossDomain) {
+            const token = $('meta[name="csrf-token"]').attr('content');
+            if (token) {
+                return jqXHR.setRequestHeader('X-CSRF-Token', token);
+            }
+        }
+    });
+}
+
+function createBtn(){
+    $.each(images,function(index,value){
+        if(!typeof(images[index])) return false;
+        if(index == 1) return true;
+        $('#change_canvas_buttons').append('<input id="'+index+'" class="manga_btn" type="button" value="'+(index)+'" onclick="changeCanvas(this.value)">');
+        if(index == 200) $("#plus_button").remove();
+    })
+    var img = new Image();
+    img.src = images[1];
+    img.onload = function(){
+        con.drawImage(img, 0, 0, 1280, 720);
+    }
+}
+
+function getManga(page){
+    setCSRF();
+    $.ajax({
+        url: HOST_NAME+'/v1/image/'+id+'/edit',
+        type: 'GET',
+        data: {
+            "page" : page
+        },
+        dataType: 'json',
+        timeout: 5000,
+    })
+    .done(function(result,textStatus,jqXHR) {  
+        if(page >= 2){
+            Object.assign(images, result);
+        }else{
+            images = result;
+        }
+        mangaPage = mangaPage + 1;
+        if(mangaPage < 5){
+            getManga(mangaPage);
+        }else{
+            createBtn();
+        }
+    })
+    .fail(function(data1,textStatus,jqXHR) {
+        var data2 = JSON.stringify(data1);
+        console.log(data2);
+    });
+}
+
+
+
+$(document).ready( function(){
+    
     // イベント登録
     // マウス
     const canvas = document.getElementById('canvas');
@@ -34,9 +97,16 @@ window.onload = function() {
     page = 1;
 
     var image = canvas.toDataURL('image/jpeg', 0.5);
-    images["1"] = image;
-    
-} 
+    if(editPage){
+        getManga(mangaPage);
+    }else{
+        images["1"] = image;
+    }
+    nowCanvas[nowCanvasNumber] = canvas.toDataURL('image/jpeg', 1);
+    nowCanvasNumber++;
+});
+
+
 // セレクトボックス変更時に色を変更する
 function changeColor(){
 
@@ -111,7 +181,9 @@ function Draw(e){
 function endDraw(){
     
     flgDraw = false;
-    
+    if(editPage && changedImages.indexOf(page) == -1) changedImages.push(page);
+    nowCanvas[nowCanvasNumber] = (canvas.toDataURL('image/jpeg', 1));
+    nowCanvasNumber++;
 }
 
 function saveCanvas()
@@ -152,74 +224,96 @@ function saveNow(){
 }
 
 function saveImages(){
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        if (!options.crossDomain) {
-            const token = $('meta[name="csrf-token"]').attr('content');
-            if (token) {
-                return jqXHR.setRequestHeader('X-CSRF-Token', token);
-            }
-        }
-    });
+    setCSRF();
     
-    $('#test_text').text('通信中...');
-    if($('#title').val() == "") {
-        $('#test_text').text('タイトルを入力してください');
-        return false;
-    }
+    if(editPage){
+        setCSRF();
 
-    i = 0;
-    var postImages = {};
-    $.each(images, function(index, value){
-        postImages["image_" + index] = value;
+        $.each(changedImages, function(index, value){
+            postImages["image_" + value] = images[value];
+          })
         postImages["title"] = $('#title').val();
-        if(i == 10) return false;
-        i++;
-    })
-
-    // Ajax通信を開始
-    $.ajax({
-        url: HOST_NAME+'/v1/image',
-        type: 'POST',
-        data: postImages,
-        dataType: 'json',
-        timeout: 5000,
+    
+        $('#test_text').text('通信中...');
+    
+        // Ajax通信を開始
+        $.ajax({
+          url: HOST_NAME+'/v1/image/'+id,
+          type: 'PATCH',
+          data: postImages,
+          dataType: 'json',
+          timeout: 5000,
         })
         .done(function(data1,textStatus,jqXHR) {
-            var mangaId = JSON.stringify(data1);
-            $('#test_text').text("初回作成成功");
-            create10over(mangaId);
+            var data2 = JSON.stringify(data1);
+            $('#test_text').text("成功");
+            console.log(data2);
+            window.location.href = '/manga';
         })
         .fail(function(data1,textStatus,jqXHR) {
-            console.log(JSON.stringify(data1));
-            $('#test_text').text("保存に失敗しました。やり直してください");
+            $('#test_text').text(JSON.stringify(data1));
         });
-
-    function create10over(mangaId){
-        postImages = {};
-        for(i = 1; i <= 20; i++){
-            number = i * 10;
-            $.each(images, function(index, value){
-                if(index >= number && index <= (number + 9)){
-                    postImages["image_" + index] = value;
-                }
-            })
-            if(postImages.length == 0) break;
+    }else{
+        $('#test_text').text('通信中...');
+        if($('#title').val() == "") {
+            $('#test_text').text('タイトルを入力してください');
+            return false;
+        }
+    
+        i = 0;
+    
+        $.each(images, function(index, value){
+            postImages["image_" + index] = value;
             postImages["title"] = $('#title').val();
-            $.ajax({
-                url: HOST_NAME+'/v1/image/'+mangaId,
-                type: 'PATCH',
-                data: postImages,
-                dataType: 'json',
-                timeout: 5000,
+            if(i == 10) return false;
+            i++;
+        })
+    
+        // Ajax通信を開始
+        $.ajax({
+            url: HOST_NAME+'/v1/image',
+            type: 'POST',
+            data: postImages,
+            dataType: 'json',
+            timeout: 5000,
             })
             .done(function(data1,textStatus,jqXHR) {
-                var data2 = JSON.stringify(data1);
-                $('#test_text').text("保存しました");
+                var mangaId = JSON.stringify(data1);
+                $('#test_text').text("初回作成成功");
+                create10over(mangaId);
             })
             .fail(function(data1,textStatus,jqXHR) {
+                console.log(JSON.stringify(data1));
                 $('#test_text').text("保存に失敗しました。やり直してください");
             });
+    
+        function create10over(mangaId){
             postImages = {};
+            for(i = 1; i <= 20; i++){
+                number = i * 10;
+                $.each(images, function(index, value){
+                    if(index >= number && index <= (number + 9)){
+                        postImages["image_" + index] = value;
+                    }
+                })
+                if(postImages.length == 0) break;
+                postImages["title"] = $('#title').val();
+                $.ajax({
+                    url: HOST_NAME+'/v1/image/'+mangaId,
+                    type: 'PATCH',
+                    data: postImages,
+                    dataType: 'json',
+                    timeout: 5000,
+                })
+                .done(function(data1,textStatus,jqXHR) {
+                    var data2 = JSON.stringify(data1);
+                    $('#test_text').text("保存しました");
+                })
+                .fail(function(data1,textStatus,jqXHR) {
+                    $('#test_text').text("保存に失敗しました。やり直してください");
+                });
+                postImages = {};
+            }
         }
     }
 };
@@ -289,9 +383,18 @@ function canvasPlus(){
             $('#change_canvas_buttons').append('<input class="manga_btn" id="'+index+'" type="button" value="'+index+'" onclick="changeCanvas(this.value)">');
         }
     })
+    nowCanvasNumber = 1;
+    nowCanvas = [];
+    nowCanvas[nowCanvasNumber] = canvas.toDataURL('image/jpeg', 1);
+    nowCanvasNumber++;
 }
 
 function changeCanvas(id){
+    if(id < 1) return;
+    if(images[id] == undefined){
+        canvasPlus();
+        return;
+    }
     $('#'+page).css('background-color', 'transparent');
     var image = canvas.toDataURL('image/jpeg', 1);
     images[page] = image;
@@ -307,6 +410,11 @@ function changeCanvas(id){
     }
     $('#'+id).css('background-color', 'yellow');
     page = id;
+
+    nowCanvasNumber = 1;
+    nowCanvas = [];
+    nowCanvas[nowCanvasNumber] = images[page];
+    nowCanvasNumber++;
 }
 
 function play(){
@@ -330,3 +438,31 @@ function play(){
     }
     playScreen();
 }
+
+document.body.addEventListener('keydown',
+    event => {
+        if (event.key === 'z' && event.ctrlKey) {
+            if(nowCanvas[nowCanvasNumber-2] != undefined){
+                delete nowCanvas[nowCanvasNumber];
+                nowCanvasNumber--;
+                delete nowCanvas[nowCanvasNumber];
+                var img = new Image();
+                img.src = nowCanvas[nowCanvasNumber-1];
+                img.onload = function(){
+                    con.drawImage(img, 0, 0, 1280, 720);
+                }
+            }
+        }
+        if (event.key === 'a'){
+            changeCanvas(page-1);
+        }
+        if (event.key === 'd'){
+            changeCanvas(page+1);
+        }
+        if (event.key === 'e'){
+            gColor = "white";
+        }
+        if (event.key === 'b'){
+            gColor = "black";
+        }
+    });
